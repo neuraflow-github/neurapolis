@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "subset-builder"
+version = "0.1.0"
+description = ""
+authors = ["Julius Huck <mail@juliushuck.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+neo4j = "^5.23.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

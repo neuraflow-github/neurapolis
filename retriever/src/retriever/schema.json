@@ -1,0 +1,1242 @@
+{
+  "FILE_HAS_MASTER_FILE": {
+    "count": 20220,
+    "properties": {},
+    "type": "relationship"
+  },
+  "PERSON_HAS_MEMBERSHIP": {
+    "count": 670,
+    "properties": {},
+    "type": "relationship"
+  },
+  "ORGANIZATION_HAS_MEMBERSHIP": {
+    "count": 667,
+    "properties": {},
+    "type": "relationship"
+  },
+  "MEETING_HAS_RESULTS_PROTOCOL_FILE": {
+    "count": 4,
+    "properties": {},
+    "type": "relationship"
+  },
+  "Membership": {
+    "count": 670,
+    "labels": [],
+    "properties": {
+      "id": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "created": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "role": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "voting_right": {
+        "unique": false,
+        "indexed": false,
+        "type": "BOOLEAN",
+        "existence": false
+      },
+      "web": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "type": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "deleted": {
+        "unique": false,
+        "indexed": false,
+        "type": "BOOLEAN",
+        "existence": false
+      },
+      "start_date": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "modified": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      }
+    },
+    "type": "node",
+    "relationships": {
+      "ORGANIZATION_HAS_MEMBERSHIP": {
+        "count": 667,
+        "direction": "in",
+        "labels": [
+          "Organization"
+        ],
+        "properties": {}
+      },
+      "PERSON_HAS_MEMBERSHIP": {
+        "count": 670,
+        "direction": "in",
+        "labels": [
+          "Person"
+        ],
+        "properties": {}
+      }
+    }
+  },
+  "Organization": {
+    "count": 38,
+    "labels": [],
+    "properties": {
+      "id": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "body": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "post": {
+        "unique": false,
+        "indexed": false,
+        "type": "LIST",
+        "existence": false
+      },
+      "created": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "name": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "keyword": {
+        "unique": false,
+        "indexed": false,
+        "type": "LIST",
+        "existence": false
+      },
+      "organization_type": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "short_name": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "type": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "deleted": {
+        "unique": false,
+        "indexed": false,
+        "type": "BOOLEAN",
+        "existence": false
+      },
+      "modified": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      }
+    },
+    "type": "node",
+    "relationships": {
+      "ORGANIZATION_HAS_MEMBERSHIP": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "Membership"
+        ],
+        "properties": {}
+      },
+      "BODY_HAS_ORGANIZATION": {
+        "count": 38,
+        "direction": "in",
+        "labels": [
+          "Body"
+        ],
+        "properties": {}
+      },
+      "PAPER_HAS_UNDER_DIRECTION_OF_ORGANIZATION": {
+        "count": 1204,
+        "direction": "in",
+        "labels": [
+          "Paper"
+        ],
+        "properties": {}
+      },
+      "ORGANIZATION_HAS_CONSULTATION": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "Consultation"
+        ],
+        "properties": {}
+      },
+      "ORGANIZATION_HAS_MEETING": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "Meeting"
+        ],
+        "properties": {}
+      }
+    }
+  },
+  "ORGANIZATION_HAS_MEETING": {
+    "count": 2207,
+    "properties": {},
+    "type": "relationship"
+  },
+  "PERSON_HAS_MEETING": {
+    "count": 25640,
+    "properties": {},
+    "type": "relationship"
+  },
+  "MEETING_HAS_LOCATION": {
+    "count": 3569,
+    "properties": {},
+    "type": "relationship"
+  },
+  "CONSULTATION_HAS_MEETING": {
+    "count": 19,
+    "properties": {},
+    "type": "relationship"
+  },
+  "PAPER_HAS_AUXILIARY_FILE": {
+    "count": 20224,
+    "properties": {},
+    "type": "relationship"
+  },
+  "BODY_HAS_ORGANIZATION": {
+    "count": 38,
+    "properties": {},
+    "type": "relationship"
+  },
+  "PAPER_HAS_UNDER_DIRECTION_OF_ORGANIZATION": {
+    "count": 9877,
+    "properties": {},
+    "type": "relationship"
+  },
+  "MEETING_HAS_AGENDA_ITEM": {
+    "count": 19490,
+    "properties": {},
+    "type": "relationship"
+  },
+  "PAPER_HAS_CONSULTATION": {
+    "count": 12978,
+    "properties": {},
+    "type": "relationship"
+  },
+  "Meeting": {
+    "count": 3571,
+    "labels": [],
+    "properties": {
+      "id": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "created": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "start": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "name": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "cancelled": {
+        "unique": false,
+        "indexed": false,
+        "type": "BOOLEAN",
+        "existence": false
+      },
+      "type": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "meeting_state": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "deleted": {
+        "unique": false,
+        "indexed": false,
+        "type": "BOOLEAN",
+        "existence": false
+      },
+      "end": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "modified": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      }
+    },
+    "type": "node",
+    "relationships": {
+      "CONSULTATION_HAS_MEETING": {
+        "count": 2,
+        "direction": "in",
+        "labels": [
+          "Consultation"
+        ],
+        "properties": {}
+      },
+      "MEETING_HAS_RESULTS_PROTOCOL_FILE": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "File"
+        ],
+        "properties": {}
+      },
+      "MEETING_HAS_AGENDA_ITEM": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "AgendaItem"
+        ],
+        "properties": {}
+      },
+      "ORGANIZATION_HAS_MEETING": {
+        "count": 2207,
+        "direction": "in",
+        "labels": [
+          "Organization"
+        ],
+        "properties": {}
+      },
+      "MEETING_HAS_LOCATION": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "Location"
+        ],
+        "properties": {}
+      },
+      "PERSON_HAS_MEETING": {
+        "count": 25640,
+        "direction": "in",
+        "labels": [
+          "Person"
+        ],
+        "properties": {}
+      },
+      "MEETING_HAS_AUXILIARY_FILE": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "File"
+        ],
+        "properties": {}
+      },
+      "BODY_HAS_MEETING": {
+        "count": 3571,
+        "direction": "in",
+        "labels": [
+          "Body"
+        ],
+        "properties": {}
+      },
+      "MEETING_HAS_VERBATIM_PROTOCOL_FILE": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "File"
+        ],
+        "properties": {}
+      }
+    }
+  },
+  "BODY_HAS_LEGISLATIVE_TERM": {
+    "count": 34,
+    "properties": {},
+    "type": "relationship"
+  },
+  "MEETING_HAS_AUXILIARY_FILE": {
+    "count": 1364,
+    "properties": {},
+    "type": "relationship"
+  },
+  "BODY_HAS_MEETING": {
+    "count": 3571,
+    "properties": {},
+    "type": "relationship"
+  },
+  "MEETING_HAS_VERBATIM_PROTOCOL_FILE": {
+    "count": 4,
+    "properties": {},
+    "type": "relationship"
+  },
+  "Paper": {
+    "count": 9762,
+    "labels": [],
+    "properties": {
+      "id": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "created": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "name": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "date": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "type": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "deleted": {
+        "unique": false,
+        "indexed": false,
+        "type": "BOOLEAN",
+        "existence": false
+      },
+      "reference": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "paper_type": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "modified": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      }
+    },
+    "type": "node",
+    "relationships": {
+      "PAPER_HAS_AUXILIARY_FILE": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "File"
+        ],
+        "properties": {}
+      },
+      "PAPER_SUPERORDINATED_TO_PAPER": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "Paper",
+          "Paper"
+        ],
+        "properties": {}
+      },
+      "PAPER_HAS_UNDER_DIRECTION_OF_ORGANIZATION": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "Organization"
+        ],
+        "properties": {}
+      },
+      "PAPER_HAS_CONSULTATION": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "Consultation"
+        ],
+        "properties": {}
+      },
+      "PAPER_HAS_ORIGINATOR_PERSON": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "Person"
+        ],
+        "properties": {}
+      },
+      "PAPER_HAS_MAIN_FILE": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "File"
+        ],
+        "properties": {}
+      },
+      "BODY_HAS_PAPER": {
+        "count": 9762,
+        "direction": "in",
+        "labels": [
+          "Body"
+        ],
+        "properties": {}
+      }
+    }
+  },
+  "Body": {
+    "count": 1,
+    "labels": [],
+    "properties": {
+      "id": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "created": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "name": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "contact_name": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "oparl_since": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "short_name": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "type": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "deleted": {
+        "unique": false,
+        "indexed": false,
+        "type": "BOOLEAN",
+        "existence": false
+      },
+      "modified": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      }
+    },
+    "type": "node",
+    "relationships": {
+      "BODY_HAS_ORGANIZATION": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "Organization"
+        ],
+        "properties": {}
+      },
+      "BODY_HAS_LEGISLATIVE_TERM": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "LegislativeTerm"
+        ],
+        "properties": {}
+      },
+      "BODY_HAS_PAPER": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "Paper"
+        ],
+        "properties": {}
+      },
+      "BODY_HAS_MEETING": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "Meeting"
+        ],
+        "properties": {}
+      },
+      "BODY_HAS_PERSON": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "Person"
+        ],
+        "properties": {}
+      },
+      "BODY_HAS_LOCATION": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "Location"
+        ],
+        "properties": {}
+      }
+    }
+  },
+  "Consultation": {
+    "count": 12978,
+    "labels": [],
+    "properties": {
+      "id": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "role": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "authoritative": {
+        "unique": false,
+        "indexed": false,
+        "type": "BOOLEAN",
+        "existence": false
+      },
+      "type": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      }
+    },
+    "type": "node",
+    "relationships": {
+      "CONSULTATION_HAS_MEETING": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "Meeting"
+        ],
+        "properties": {}
+      },
+      "AGENDA_ITEM_HAS_CONSULTATION": {
+        "count": 3,
+        "direction": "in",
+        "labels": [
+          "AgendaItem"
+        ],
+        "properties": {}
+      },
+      "PAPER_HAS_CONSULTATION": {
+        "count": 1588,
+        "direction": "in",
+        "labels": [
+          "Paper"
+        ],
+        "properties": {}
+      },
+      "ORGANIZATION_HAS_CONSULTATION": {
+        "count": 10387,
+        "direction": "in",
+        "labels": [
+          "Organization"
+        ],
+        "properties": {}
+      }
+    }
+  },
+  "PAPER_SUPERORDINATED_TO_PAPER": {
+    "count": 899,
+    "properties": {},
+    "type": "relationship"
+  },
+  "File": {
+    "count": 31352,
+    "labels": [],
+    "properties": {
+      "sha1_checksum": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "text": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "date": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "file_name": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "type": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "deleted": {
+        "unique": false,
+        "indexed": false,
+        "type": "BOOLEAN",
+        "existence": false
+      },
+      "access_url": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "size": {
+        "unique": false,
+        "indexed": false,
+        "type": "INTEGER",
+        "existence": false
+      },
+      "modified": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "id": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "mime_type": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "created": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "download_url": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "name": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      }
+    },
+    "type": "node",
+    "relationships": {
+      "FILE_HAS_MASTER_FILE": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "File",
+          "File"
+        ],
+        "properties": {}
+      },
+      "MEETING_HAS_RESULTS_PROTOCOL_FILE": {
+        "count": 2,
+        "direction": "in",
+        "labels": [
+          "Meeting"
+        ],
+        "properties": {}
+      },
+      "PAPER_HAS_AUXILIARY_FILE": {
+        "count": 2583,
+        "direction": "in",
+        "labels": [
+          "Paper"
+        ],
+        "properties": {}
+      },
+      "PAPER_HAS_MAIN_FILE": {
+        "count": 1220,
+        "direction": "in",
+        "labels": [
+          "Paper"
+        ],
+        "properties": {}
+      },
+      "MEETING_HAS_AUXILIARY_FILE": {
+        "count": 454,
+        "direction": "in",
+        "labels": [
+          "Meeting"
+        ],
+        "properties": {}
+      },
+      "MEETING_HAS_VERBATIM_PROTOCOL_FILE": {
+        "count": 2,
+        "direction": "in",
+        "labels": [
+          "Meeting"
+        ],
+        "properties": {}
+      }
+    }
+  },
+  "Location": {
+    "count": 3570,
+    "labels": [],
+    "properties": {
+      "id": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "created": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "description": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "postal_code": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "sub_locality": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "locality": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "web": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "street_address": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "type": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "deleted": {
+        "unique": false,
+        "indexed": false,
+        "type": "BOOLEAN",
+        "existence": false
+      },
+      "room": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "modified": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      }
+    },
+    "type": "node",
+    "relationships": {
+      "MEETING_HAS_LOCATION": {
+        "count": 1188,
+        "direction": "in",
+        "labels": [
+          "Meeting"
+        ],
+        "properties": {}
+      },
+      "BODY_HAS_LOCATION": {
+        "count": 1,
+        "direction": "in",
+        "labels": [
+          "Body"
+        ],
+        "properties": {}
+      }
+    }
+  },
+  "PAPER_HAS_MAIN_FILE": {
+    "count": 9760,
+    "properties": {},
+    "type": "relationship"
+  },
+  "AgendaItem": {
+    "count": 19490,
+    "labels": [],
+    "properties": {
+      "id": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "name": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "number": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "public": {
+        "unique": false,
+        "indexed": false,
+        "type": "BOOLEAN",
+        "existence": false
+      },
+      "type": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      }
+    },
+    "type": "node",
+    "relationships": {
+      "AGENDA_ITEM_HAS_CONSULTATION": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "Consultation"
+        ],
+        "properties": {}
+      },
+      "MEETING_HAS_AGENDA_ITEM": {
+        "count": 6442,
+        "direction": "in",
+        "labels": [
+          "Meeting"
+        ],
+        "properties": {}
+      }
+    }
+  },
+  "BODY_HAS_PERSON": {
+    "count": 340,
+    "properties": {},
+    "type": "relationship"
+  },
+  "AGENDA_ITEM_HAS_CONSULTATION": {
+    "count": 19,
+    "properties": {},
+    "type": "relationship"
+  },
+  "LegislativeTerm": {
+    "count": 34,
+    "labels": [],
+    "properties": {
+      "id": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "end_date": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "created": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "name": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "type": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "deleted": {
+        "unique": false,
+        "indexed": false,
+        "type": "BOOLEAN",
+        "existence": false
+      },
+      "start_date": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "modified": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      }
+    },
+    "type": "node",
+    "relationships": {
+      "BODY_HAS_LEGISLATIVE_TERM": {
+        "count": 34,
+        "direction": "in",
+        "labels": [
+          "Body"
+        ],
+        "properties": {}
+      }
+    }
+  },
+  "ORGANIZATION_HAS_CONSULTATION": {
+    "count": 10387,
+    "properties": {},
+    "type": "relationship"
+  },
+  "PAPER_HAS_ORIGINATOR_PERSON": {
+    "count": 307,
+    "properties": {},
+    "type": "relationship"
+  },
+  "BODY_HAS_PAPER": {
+    "count": 9762,
+    "properties": {},
+    "type": "relationship"
+  },
+  "Person": {
+    "count": 340,
+    "labels": [],
+    "properties": {
+      "phone": {
+        "unique": false,
+        "indexed": false,
+        "type": "LIST",
+        "existence": false
+      },
+      "form_of_address": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "type": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "given_name": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "deleted": {
+        "unique": false,
+        "indexed": false,
+        "type": "BOOLEAN",
+        "existence": false
+      },
+      "modified": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "id": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "title": {
+        "unique": false,
+        "indexed": false,
+        "type": "LIST",
+        "existence": false
+      },
+      "life": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "created": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "email": {
+        "unique": false,
+        "indexed": false,
+        "type": "LIST",
+        "existence": false
+      },
+      "name": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "gender": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      },
+      "family_name": {
+        "unique": false,
+        "indexed": false,
+        "type": "STRING",
+        "existence": false
+      }
+    },
+    "type": "node",
+    "relationships": {
+      "PERSON_HAS_MEMBERSHIP": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "Membership"
+        ],
+        "properties": {}
+      },
+      "PAPER_HAS_ORIGINATOR_PERSON": {
+        "count": 38,
+        "direction": "in",
+        "labels": [
+          "Paper"
+        ],
+        "properties": {}
+      },
+      "PERSON_HAS_MEETING": {
+        "count": 0,
+        "direction": "out",
+        "labels": [
+          "Meeting"
+        ],
+        "properties": {}
+      },
+      "BODY_HAS_PERSON": {
+        "count": 340,
+        "direction": "in",
+        "labels": [
+          "Body"
+        ],
+        "properties": {}
+      }
+    }
+  },
+  "BODY_HAS_LOCATION": {
+    "count": 1,
+    "properties": {},
+    "type": "relationship"
+  }
+}
