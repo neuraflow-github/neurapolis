@@ -67,8 +67,6 @@ if __name__ == "__main__":
         json.dump(stripped_schema, f, indent=2, ensure_ascii=False)
 
     # TODO Add descirptions to relationships
-    asdf
-    asdf
 
     # Prompt
     prompt_template = """
