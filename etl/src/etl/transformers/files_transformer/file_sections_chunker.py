@@ -33,7 +33,7 @@ class FileSectionsChunker:
         )
 
     def chunk_file(self, file: File, temp_file_dir_path: str):
-        logging.info(f"{self.__class__.__name__}: Started chunking file {file.id}")
+        logging.info(f"{self.__class__.__name__}: File: {file.id}: Started chunking")
         file_sections_pkl_file_path = os.path.join(
             temp_file_dir_path, "file_sections.pkl"
         )
@@ -68,4 +68,6 @@ class FileSectionsChunker:
         file_chunks_pkl_file_path = os.path.join(temp_file_dir_path, "file_chunks.pkl")
         with open(file_chunks_pkl_file_path, "wb") as file_chunks_pkl_file:
             pickle.dump(file_chunks, file_chunks_pkl_file)
-        logging.info(f"{self.__class__.__name__}: Finished chunking file {file.id}")
+        logging.info(
+            f"{self.__class__.__name__}: File: {file.id}: Finished chunking: Found {len(file_chunks)} file chunks"
+        )

@@ -58,14 +58,16 @@ class FileSectionizer:
         self.chain = self.prompt_template | self.structured_llm
 
     def sectionize_file(self, file: File, temp_file_dir_path: str):
-        logging.info(f"{self.__class__.__name__}: Started sectionizing file {file.id}")
+        logging.info(
+            f"{self.__class__.__name__}: File: {file.id}: Started sectionizing"
+        )
         text_md_file_path = f"{temp_file_dir_path}/text.md"
         with open(text_md_file_path, "r") as text_md_file:
             file_text = text_md_file.read()
-        logging.info(f"{self.__class__.__name__}: Started reasoning file {file.id}")
+        logging.info(f"{self.__class__.__name__}: File: {file.id}: Started reasoning")
         chain_response = self.chain.invoke({"document_content": file_text})
         logging.info(
-            f"{self.__class__.__name__}: Finished reasoning file {file.id}. Type: {chain_response.type}, Reason: {chain_response.reason}, Line split indices: {chain_response.line_split_indices}"
+            f"{self.__class__.__name__}: File: {file.id}: Finished reasoning: Type: {chain_response.type}, Reason: {chain_response.reason}, Line split indices: {chain_response.line_split_indices}"
         )
         sectionizer_result_pkl_file_path = os.path.join(
             temp_file_dir_path, "sectionizer_result.pkl"
@@ -96,7 +98,9 @@ class FileSectionizer:
         )
         with open(file_sections_pkl_file_path, "wb") as file_sections_pkl_file:
             pickle.dump(file_sections, file_sections_pkl_file)
-        logging.info(f"{self.__class__.__name__}: Finished sectionizing file {file.id}")
+        logging.info(
+            f"{self.__class__.__name__}: File: {file.id}: Finished sectionizing"
+        )
 
     def _sectionize_file_text(
         self, file_id: str, file_text: str, split_lines: List[int]

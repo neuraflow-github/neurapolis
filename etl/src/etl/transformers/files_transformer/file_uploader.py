@@ -17,7 +17,9 @@ class FileUploader:
         file: File,
         temp_file_dir_path: str,
     ):
-        logging.info(f"{self.__class__.__name__}: Started uploading file {file.id}")
+        logging.info(
+            f"{self.__class__.__name__}: File: {file.id}: Started uploading file"
+        )
         text_md_file_path = os.path.join(temp_file_dir_path, "text.md")
         with open(text_md_file_path, "r") as text_md_file:
             text = text_md_file.read()
@@ -48,12 +50,16 @@ class FileUploader:
             file_chunks = pickle.load(file_chunks_pkl_file)
         self.upload_file_chunks(file, file_chunks)
         self.upload_file_section_has_file_chunk_relationships(file, file_chunks)
-        logging.info(f"{self.__class__.__name__}: Finished uploading file {file.id}")
+        logging.info(
+            f"{self.__class__.__name__}: File: {file.id}: Finished uploading file"
+        )
 
     def update_file(
         self, file: File, text: str, sectionizer_type: str, sectionizer_reason: str
     ):
-        logging.info(f"{self.__class__.__name__}: Started updating file {file.id}")
+        logging.info(
+            f"{self.__class__.__name__}: File: {file.id}: Started updating file"
+        )
         db_query = """
         MATCH (file_node:File {id: $file_id})
         SET file_node.extracted_text = $extracted_text,
@@ -68,11 +74,13 @@ class FileUploader:
                 sectionizer_type=sectionizer_type,
                 sectionizer_reason=sectionizer_reason,
             )
-        logging.info(f"{self.__class__.__name__}: Finished updating file {file.id}")
+        logging.info(
+            f"{self.__class__.__name__}: File: {file.id}: Finished updating file"
+        )
 
     def upload_file_sections(self, file: File, file_sections: List[FileSection]):
         logging.info(
-            f"{self.__class__.__name__}: Started uploading file sections of file {file.id}"
+            f"{self.__class__.__name__}: File: {file.id}: Started uploading file sections"
         )
         db_query = """
         UNWIND $file_section_db_dicts AS x_file_section_db_dict
@@ -84,19 +92,19 @@ class FileUploader:
             file_section_db_dict = file_section.to_db_dict()
             file_section_db_dicts.append(file_section_db_dict)
         logging.info(
-            f"{self.__class__.__name__}: Found {len(file_section_db_dicts)} file sections of file {file.id}"
+            f"{self.__class__.__name__}: File: {file.id}: Found {len(file_section_db_dicts)} file sections"
         )
         with db_session_builder.build() as db_session:
             db_session.run(db_query, file_section_db_dicts=file_section_db_dicts)
         logging.info(
-            f"{self.__class__.__name__}: Finished uploading file sections of file {file.id}"
+            f"{self.__class__.__name__}: File: {file.id}: Finished uploading file sections"
         )
 
     def upload_file_has_file_section_relationships(
         self, file: File, file_sections: List[FileSection]
     ):
         logging.info(
-            f"{self.__class__.__name__}: Started uploading FILE_HAS_FILE_SECTION relationships of file {file.id}"
+            f"{self.__class__.__name__}: File: {file.id}: Started uploading FILE_HAS_FILE_SECTION relationships"
         )
         db_query = """
         UNWIND $pairs AS relationship_pair
@@ -112,17 +120,17 @@ class FileUploader:
             }
             pairs.append(pair)
         logging.info(
-            f"{self.__class__.__name__}: Found {len(pairs)} FILE_HAS_FILE_SECTION relationships of file {file.id}"
+            f"{self.__class__.__name__}: File: {file.id}: Found {len(pairs)} FILE_HAS_FILE_SECTION relationships"
         )
         with db_session_builder.build() as db_session:
             db_session.run(db_query, pairs=pairs)
         logging.info(
-            f"{self.__class__.__name__}: Finished uploading FILE_HAS_FILE_SECTION relationships of file {file.id}"
+            f"{self.__class__.__name__}: File: {file.id}: Finished uploading FILE_HAS_FILE_SECTION relationships"
         )
 
     def upload_file_chunks(self, file: File, file_chunks: List[FileChunk]):
         logging.info(
-            f"{self.__class__.__name__}: Started uploading file chunks of file {file.id}"
+            f"{self.__class__.__name__}: File: {file.id}: Started uploading file chunks"
         )
         db_query = """
         UNWIND $file_chunk_db_dicts AS x_file_chunk_db_dict
@@ -133,19 +141,19 @@ class FileUploader:
         for file_chunk in file_chunks:
             file_chunk_db_dicts.append(file_chunk.to_db_dict())
         logging.info(
-            f"{self.__class__.__name__}: Found {len(file_chunk_db_dicts)} file chunks of file {file.id}"
+            f"{self.__class__.__name__}: File: {file.id}: Found {len(file_chunk_db_dicts)} file chunks"
         )
         with db_session_builder.build() as db_session:
             db_session.run(db_query, file_chunk_db_dicts=file_chunk_db_dicts)
         logging.info(
-            f"{self.__class__.__name__}: Finished uploading file chunks of file {file.id}"
+            f"{self.__class__.__name__}: File: {file.id}: Finished uploading file chunks"
         )
 
     def upload_file_section_has_file_chunk_relationships(
         self, file: File, file_chunks: List[FileChunk]
     ):
         logging.info(
-            f"{self.__class__.__name__}: Started uploading FILE_SECTION_HAS_FILE_CHUNK relationships of file {file.id}"
+            f"{self.__class__.__name__}: File: {file.id}: Started uploading FILE_SECTION_HAS_FILE_CHUNK relationships"
         )
         db_query = """
         UNWIND $pairs AS relationship_pair
@@ -161,10 +169,10 @@ class FileUploader:
             }
             pairs.append(pair)
         logging.info(
-            f"{self.__class__.__name__}: Found {len(pairs)} FILE_SECTION_HAS_FILE_CHUNK relationships of file {file.id}"
+            f"{self.__class__.__name__}: File: {file.id}: Found {len(pairs)} FILE_SECTION_HAS_FILE_CHUNK relationships"
         )
         with db_session_builder.build() as db_session:
             db_session.run(db_query, pairs=pairs)
         logging.info(
-            f"{self.__class__.__name__}: Finished uploading FILE_SECTION_HAS_FILE_CHUNK relationships of file {file.id}"
+            f"{self.__class__.__name__}: File: {file.id}: Finished uploading FILE_SECTION_HAS_FILE_CHUNK relationships"
         )

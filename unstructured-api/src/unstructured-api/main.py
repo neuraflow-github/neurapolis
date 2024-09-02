@@ -1,9 +1,12 @@
 import os
+import sys
 import uuid
 
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
 from unstructured.partition.auto import partition
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 app = FastAPI()
 
