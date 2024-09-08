@@ -34,7 +34,7 @@ class FilesTransformer:
             LIMIT $limit
             """
             while True:
-                files_db_result = db_session.run(db_query, limit=50)
+                files_db_result = db_session.run(db_query, limit=500)
                 files = []
                 for x_file_db_dict in files_db_result:
                     file = File.from_db_dict(x_file_db_dict["file"])
