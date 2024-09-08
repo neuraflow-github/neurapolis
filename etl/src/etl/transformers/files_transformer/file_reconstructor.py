@@ -103,6 +103,8 @@ class FileReconstructor:
                     }
                 ],
             )
+            # print(f"ASDF: Input tokens: {response.usage.prompt_tokens}")
+            # print(f"ASDF: Output tokens: {response.usage.completion_tokens}")
             logging.info(
                 f"{self.__class__.__name__}: File: {file.id}: Page {page_dir_name}: Finished calling LLM"
             )

@@ -44,17 +44,17 @@ class FilesTransformer:
                         logging.info(
                             f"{self.__class__.__name__}: File: {x_file.id}: Started transforming file"
                         )
-                        temp_file_dir_path = os.path.join(
-                            config.temp_dir_path, str(uuid.uuid4())
-                        )
-                        os.makedirs(temp_file_dir_path, exist_ok=True)
-                        self.file_text_extractor.extract_file_text(
-                            x_file, temp_file_dir_path
-                        )
-                        self.file_reconstructor.reconstruct_file(
-                            x_file, temp_file_dir_path
-                        )
-                        # temp_file_dir_path = "/Users/juliushuck/Projects/datas/ris/datastore/20_temp/5546d478-efeb-4873-8e3c-4e249b324bfb"
+                        # temp_file_dir_path = os.path.join(
+                        #     config.temp_dir_path, str(uuid.uuid4())
+                        # )
+                        # os.makedirs(temp_file_dir_path, exist_ok=True)
+                        # self.file_text_extractor.extract_file_text(
+                        #     x_file, temp_file_dir_path
+                        # )
+                        # self.file_reconstructor.reconstruct_file(
+                        #     x_file, temp_file_dir_path
+                        # )
+                        temp_file_dir_path = "/Users/juliushuck/Projects/datas/ris/datastore/20_temp/fcdd870d-a004-4cdf-94c1-0fa8e7d0eddb"
                         self.file_sectionizer.sectionize_file(
                             x_file, temp_file_dir_path
                         )

@@ -19,7 +19,7 @@ class FileSectionizerLineSplitLlmDataModel(BaseModel):
         description="Zeilennummer, an der das Dokument aufgeteilt werden soll"
     )
     reason: str = Field(
-        description="Sehr kurze Begründung für die Aufteilung an dieser Stelle"
+        description="Kurze Begründung für die Aufteilung an dieser Stelle"
     )
 
 
@@ -66,7 +66,7 @@ class FileSectionizer:
             - In jeder Sektion sollte es dann nur noch um ein größeres Thema gehen. Jede Sektion kann auch wieder mehere Themen beinhalten, aber diese sollten dann eher Unterthemen des größeren Themas sein.
             - Sektionen sollten also auch nicht viel zu klein schrittig werden.
             - Es wird immer vor der Zeile gesplittet. Wenn du also unter anderem Zeile 2 angibst, würde zwischen Zeile 1 und 2 gesplittet werden.
-            - Gib zu jeder Aufteilung eine sehr kurze Begründung an, warum du das Dokument an dieser Stelle aufgeteilt hast.
+            - Gib zu jeder Aufteilung eine kurze Begründung an, warum du das Dokument an dieser Stelle aufgeteilt hast.
 
         <Inhalt des Dokuments>
         {document_content}

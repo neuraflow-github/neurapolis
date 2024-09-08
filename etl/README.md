@@ -31,3 +31,13 @@ RETURN batches, total`
 ## Commands
 
 - Delete all file sections and file chunks: `MATCH (n:FileSection) DETACH DELETE n; MATCH (n:FileChunk) DETACH DELETE n;`
+
+## Cost
+
+- Per page reconstruction
+  - Input tokens: 3700 = 
+  - Output tokens: 650 = 
+- Pages per file: 
+- Sectionizer cost per file:
+  - Input tokens: 
+  - Output tokens: 
