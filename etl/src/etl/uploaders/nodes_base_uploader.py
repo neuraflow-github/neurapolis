@@ -20,13 +20,13 @@ class NodesBaseUploader(BaseUploader, Generic[T]):
     def _load_items(self) -> List[T]:
         pass
 
-    def _delete_obsolete_nodes(self, db_tx, current_ids: List[str]):
+    def _delete_obsolete_nodes(self, db_tx, current_node_ids: List[str]):
         db_query = f"""
         MATCH (node:{self._node_label})
-        WHERE NOT node.id IN $current_ids
+        WHERE NOT node.id IN $current_node_ids
         DETACH DELETE node
         """
-        db_tx.run(db_query, current_ids=current_ids)
+        db_tx.run(db_query, current_node_ids=current_node_ids)
 
     def _update_or_create_nodes(self, db_tx, items: List[T]):
         db_query = f"""
@@ -46,10 +46,10 @@ class NodesBaseUploader(BaseUploader, Generic[T]):
         logging.info(
             f"{self.__class__.__name__}: Found {len(items)} {self._node_label} items"
         )
-        current_ids = []
+        current_node_ids = []
         for item in items:
-            current_ids.append(item.id)
+            current_node_ids.append(item.id)
         with db_session_builder.build() as db_session:
-            db_session.write_transaction(self._delete_obsolete_nodes, current_ids)
+            db_session.write_transaction(self._delete_obsolete_nodes, current_node_ids)
             db_session.write_transaction(self._update_or_create_nodes, items)
         logging.info(f"{self.__class__.__name__}: Finished uploading")

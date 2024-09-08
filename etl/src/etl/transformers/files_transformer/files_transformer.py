@@ -3,9 +3,9 @@ import os
 import shutil
 import uuid
 
+from etl.config import config
 from etl.models.file import File
 from etl.services.db_session_builder import db_session_builder
-from etl.utilities.config import config
 
 from .file_reconstructor import FileReconstructor
 from .file_sectionizer import FileSectionizer
@@ -54,15 +54,15 @@ class FilesTransformer:
                         self.file_reconstructor.reconstruct_file(
                             x_file, temp_file_dir_path
                         )
-                        # temp_file_dir_path = "/Users/juliushuck/Projects/datas/ris/datastore/20_temp/4b8ff134-0c11-4953-af85-39524bd1c8a3"
+                        # temp_file_dir_path = "/Users/juliushuck/Projects/datas/ris/datastore/20_temp/5546d478-efeb-4873-8e3c-4e249b324bfb"
                         self.file_sectionizer.sectionize_file(
                             x_file, temp_file_dir_path
                         )
                         self.file_sections_chunker.chunk_file(
                             x_file, temp_file_dir_path
                         )
-                        self.file_uploader.upload_file(x_file, temp_file_dir_path)
-                        shutil.rmtree(temp_file_dir_path)
+                        # self.file_uploader.upload_file(x_file, temp_file_dir_path)
+                        # shutil.rmtree(temp_file_dir_path)
                         logging.info(
                             f"{self.__class__.__name__}: File: {x_file.id}: Finished transforming file"
                         )

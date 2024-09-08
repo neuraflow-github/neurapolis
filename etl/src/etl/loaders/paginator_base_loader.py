@@ -4,7 +4,7 @@ from typing import List, Type, TypeVar
 
 import requests
 
-from etl.utilities.config import config
+from etl.config import config
 from etl.utilities.request_session import request_session
 
 from .base_loader import BaseLoader

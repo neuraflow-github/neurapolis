@@ -10,8 +10,8 @@ from typing import Generic, List, Type, TypeVar
 
 import requests
 
+from etl.config import config
 from etl.models.ris_api_dto import RisApiDto
-from etl.utilities.config import config
 from etl.utilities.request_session import request_session
 
 T = TypeVar("T", bound=RisApiDto)

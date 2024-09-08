@@ -16,13 +16,19 @@ from etl.models.file import File
 class FileReconstructor:
     def __init__(self):
         self.prompt_template_string = """
-        - Du bist ein Dokument-Extrahierer
+         Du bist Teil einer Retrieval Augmented Generation Anwendung namens Rats Informations System (RIS). Du bist außerdem Teil der ETL-Pipeline dieser Anwendung.
+
+        Das RIS ist eine Graphdatenbank, die Informationen einer bestimmten Stadt über Organisationen, Personen, Sitzungen, Dateien usw. enthält. Es ist ein internes System für Politiker und städtische Mitarbeiter, das ihnen bei ihrer Arbeit hilft. Deine Stadt ist die deutsche Stadt Freiburg.
+
+        Die Aufgabe der ETL-Pipeline ist es, die Dateien für die Vektorsuche vorzubereiten, also Parsing, Bereinigung, Chunking, Embedding.
+
+        Du bist der Datei-Rekonstruierer.
+
+        Deine Aufgabe:
         - Die Dokumente gehören mir und ich habe die Rechte an ihnen.
         - Ich gebe dir die durch OCR extrahierten Textbausteine einer Seite des Dokuments und du setzt die Textbausteine in der richtigen Reihenfolge wieder zur ganzen Seite zusammen. Dies ist notwendig, da der OCR extrahierte Text etwas durcheinander geraten ist. Zur Hilfe gebe ich dir zusätzlich auch die Positionen der Textbausteine und die Kategorie der Textbausteine. Die Kategorie ist allerdings nicht immer korrekt.
         - !!! Fasse keine Texte zusammen und LASSE AUF KEINEN FALL TEXTE/TEXTBAUSTEINE WEG. Auch wenn Seiten manchmal sehr lang sein können, gib immer die volle ganze Seite aus.
-        - Benutze Markdown. Gebe aber keine Codeblock zeichen wie "```markdown" aus.
-
-        Es folgen die durch OCR extrahierten Textbausteine der Seite, welche du verarbeiten sollst:
+        - Gebe Plaintext aus. Kein Markdown. Keine Markdown-Headings oder sonstige Markdown-Syntax.
 
         <Textbausteine>
         {text_elements_yaml}
@@ -59,7 +65,7 @@ class FileReconstructor:
                 f"{self.__class__.__name__}: File: {file.id}: Page {page_dir_name}: Started converting page to JPEG"
             )
             page_pdf_file_path = os.path.join(page_dir_path, "page.pdf")
-            page_images = pdf2image.convert_from_path(page_pdf_file_path, dpi=75)
+            page_images = pdf2image.convert_from_path(page_pdf_file_path, dpi=96)
             page_jpeg_file_path = os.path.join(page_dir_path, "page.jpeg")
             page_images[0].save(page_jpeg_file_path, "JPEG")
             with open(page_jpeg_file_path, "rb") as page_jpeg_file:

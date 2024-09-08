@@ -6,8 +6,8 @@ import requests
 import yaml
 from PyPDF2 import PdfReader, PdfWriter
 
+from etl.config import config
 from etl.models.file import File
-from etl.utilities.config import config
 
 
 class FileTextExtractor:
@@ -16,11 +16,11 @@ class FileTextExtractor:
             f"{self.__class__.__name__}: File: {file.id}: Started extracting file text"
         )
         file_pdf_file_path = os.path.join(temp_file_dir_path, "file.pdf")
-        metadata_file_path = os.path.join(temp_file_dir_path, "metadata.json")
-        with open(metadata_file_path, "w") as metadata_file:
+        metadata_json_file_path = os.path.join(temp_file_dir_path, "metadata.json")
+        with open(metadata_json_file_path, "w") as metadata_json_file:
             json.dump(
                 file.to_db_dict(),
-                metadata_file,
+                metadata_json_file,
                 indent=4,
                 ensure_ascii=False,
             )
@@ -34,6 +34,13 @@ class FileTextExtractor:
         logging.info(
             f"{self.__class__.__name__}: File: {file.id}: Found {len(pdf_reader.pages)} pages"
         )
+        if len(pdf_reader.pages) > 20:
+            logging.error(
+                f"{self.__class__.__name__}: File: {file.id}: Found {len(pdf_reader.pages)} pages. This is too many pages to extract text from."
+            )
+            raise Exception(
+                f"{self.__class__.__name__}: File: {file.id}: Found {len(pdf_reader.pages)} pages. This is too many pages to extract text from."
+            )
         for page_index in range(len(pdf_reader.pages)):
             logging.info(
                 f"{self.__class__.__name__}: File: {file.id}: Page {page_index}: Started extracting page text"

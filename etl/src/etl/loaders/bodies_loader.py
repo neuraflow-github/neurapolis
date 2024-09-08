@@ -1,7 +1,7 @@
 from typing import List
 
+from etl.config import config
 from etl.models.body import Body
-from etl.utilities.config import config
 
 from .base_loader import BaseLoader
 
