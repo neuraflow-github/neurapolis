@@ -37,7 +37,12 @@ RETURN batches, total`
 - Per page reconstruction
   - Input tokens: 3700 = 
   - Output tokens: 650 = 
-- Pages per file: 
+  - Total: 0.01575 $
+- Pages per file:
+- Reconstruction all 13 pages = 0,20475 $
 - Sectionizer cost per file:
-  - Input tokens: 
-  - Output tokens: 
+  - Total: 0.04426 $
+- Total = 0,24901 $
+
+- 5 pages per file average
+- Reconstruction: 5 * 0,01575 = 0,07875
