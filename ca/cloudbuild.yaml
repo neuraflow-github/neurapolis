@@ -1,0 +1,34 @@
+steps:
+  # Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/neurapolis-ca:latest', '.']
+
+  # Push the image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/neurapolis-ca:latest']
+
+  # Deploy the latest image from Container Registry to Cloud Run
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      - "run"
+      - "deploy"
+      - "neurapolis-ca"
+      - "--image"
+      - "gcr.io/$PROJECT_ID/neurapolis-ca:latest"
+      - "--region"
+      - "europe-west3"
+      - "--platform"
+      - "managed"
+      - "--allow-unauthenticated"
+      - "--port"
+      - "8080"
+      - "--memory"
+      - "2Gi"
+      - "--set-env-vars"
+      - "LANGCHAIN_PROJECT=neurapolis-ca,LANGCHAIN_TRACING_V2=true,LANGCHAIN_ENDPOINT=https://eu.api.smith.langchain.com,AWS_DEFAULT_REGION=eu-central-1"
+      - "--set-secrets"
+      - "LANGCHAIN_API_KEY=LANGCHAIN_API_KEY:latest,AWS_ACCESS_KEY_ID=AWS_ACCESS_KEY_ID:latest,AWS_SECRET_ACCESS_KEY=AWS_SECRET_ACCESS_KEY:latest"
+    id: "Deploy Latest Container on Google Cloud Run"
+
+images:
+  - 'gcr.io/$PROJECT_ID/neurapolis-ca:latest'
