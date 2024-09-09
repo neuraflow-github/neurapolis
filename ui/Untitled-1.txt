@@ -1,0 +1,5 @@
+Operation completed over 1 objects/89.0 KiB.                                     
+BUILD
+Starting Step #0 - "Build Container Image"
+Step #0 - "Build Container Image": Already have image (with digest): gcr.io/cloud-builders/docker
+Step #0 - "Build Container Image": unable to prepare context: unable to evaluate symlinks in Dockerfile path: lstat /workspace/Dockerfile: no such file or directory
