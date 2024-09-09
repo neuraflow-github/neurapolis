@@ -10,12 +10,15 @@ load_dotenv()
 class MyConfig(BaseSettings):
     # Keep sorted
     api_url: str = Field(env="API_URL")
+    azure_openai_api_key: str = Field(env="AZURE_OPENAI_API_KEY")
+    azure_openai_endpoint: str = Field(env="AZURE_OPENAI_ENDPOINT")
     datastore_dir_path: str = Field(env="DATASTORE_DIR_PATH")
     db_name: str = Field(env="DB_NAME")
     db_password: str = Field(env="DB_PASSWORD")
     db_uri: str = Field(env="DB_URI")
     db_username: str = Field(env="DB_USERNAME")
     openai_api_key: str = Field(env="OPENAI_API_KEY")
+    openai_api_version: str = Field(env="OPENAI_API_VERSION")
     unstructured_api_url: str = Field(env="UNSTRUCTURED_API_URL")
 
     @property

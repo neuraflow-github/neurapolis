@@ -7,7 +7,7 @@ from datetime import datetime
 from typing import List
 
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_openai import ChatOpenAI
+from langchain_openai import AzureChatOpenAI
 from pydantic import BaseModel, Field
 
 from etl.models.file import File
@@ -15,7 +15,7 @@ from etl.models.file_section import FileSection
 
 
 class FileSectionizerLineSplitLlmDataModel(BaseModel):
-    line_index: int = Field(
+    line_number: int = Field(
         description="Zeilennummer, an der das Dokument aufgeteilt werden soll"
     )
     reason: str = Field(
@@ -75,11 +75,15 @@ class FileSectionizer:
         self.prompt_template = ChatPromptTemplate.from_template(
             self.prompt_template_string
         )
-        self.llm = ChatOpenAI(model="gpt-4o", temperature=0)
-        self.structured_llm = self.llm.with_structured_output(
+        self.llm = AzureChatOpenAI(
+            azure_deployment="gpt-4o",
+            temperature=0,
+            max_tokens=4096,
+        )
+        self.structured_output_llm = self.llm.with_structured_output(
             FileSectionizerLlmDataModel
         )
-        self.chain = self.prompt_template | self.structured_llm
+        self.chain = self.prompt_template | self.structured_output_llm
 
     def sectionize_file(self, file: File, temp_file_dir_path: str):
         logging.info(
@@ -92,7 +96,7 @@ class FileSectionizer:
         chain_response = self.chain.invoke({"document_content": file_text})
         line_split_indices = []
         for x_split in chain_response.splits:
-            line_split_indices.append(x_split.line_index)
+            line_split_indices.append(x_split.line_number)
         logging.info(
             f"{self.__class__.__name__}: File: {file.id}: Finished reasoning: Type: {chain_response.type}, Reason: {chain_response.reason}, Line split indices: {line_split_indices}"
         )
@@ -115,7 +119,7 @@ class FileSectionizer:
                     "reason": chain_response.reason,
                     "splits": [
                         {
-                            "line_index": x_split.line_index,
+                            "line_number": x_split.line_number,
                             "reason": x_split.reason,
                         }
                         for x_split in chain_response.splits
