@@ -54,9 +54,9 @@ class BaseLoader(ABC, Generic[T]):
                 )
                 return None
             response.raise_for_status()
-        except requests.RequestException as e:
+        except requests.RequestException as exception:
             logging.error(
-                f"{self.__class__.__name__}: Failed to load detailed {self._item_name}: {item.id}: {e}"
+                f"{self.__class__.__name__}: Failed loading detailed {self._item_name}: {item.id}: {exception}"
             )
             return None
         item_ris_api_dto = response.json()

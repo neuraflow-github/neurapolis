@@ -28,7 +28,8 @@ class FilesTransformer:
             db_query = """
             MATCH (file:File)
             WHERE file.mime_type = "application/pdf"
-            AND NOT EXISTS ((file)-[:FILE_HAS_FILE_SECTION]->())
+            AND (file.page_count IS NULL OR file.page_count <= 20)
+            AND file.extracted_text IS NULL
             RETURN file
             ORDER BY file.id
             LIMIT $limit
@@ -66,8 +67,8 @@ class FilesTransformer:
                         logging.info(
                             f"{self.__class__.__name__}: File: {x_file.id}: Finished transforming file"
                         )
-                    except Exception as e:
+                    except Exception as exception:
                         logging.error(
-                            f"{self.__class__.__name__}: File: {x_file.id}: Error transforming file: {e}"
+                            f"{self.__class__.__name__}: File: {x_file.id}: Error transforming file: {exception}"
                         )
                 break

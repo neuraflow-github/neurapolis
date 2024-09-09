@@ -50,7 +50,7 @@ class FileSectionizer:
         self.prompt_template_string = """
         Du bist Teil einer Retrieval Augmented Generation Anwendung namens Rats Informations System (RIS). Du bist außerdem Teil der ETL-Pipeline dieser Anwendung.
 
-        Das RIS ist eine Graphdatenbank, die Informationen einer bestimmten Stadt über Organisationen, Personen, Sitzungen, Dateien usw. enthält. Es ist ein internes System für Politiker und städtische Mitarbeiter, das ihnen bei ihrer Arbeit hilft. Deine Stadt ist die deutsche Stadt Freiburg.
+        Das RIS ist eine Datenbank, die Informationen einer bestimmten Stadt über Organisationen, Personen, Sitzungen, Dateien usw. enthält. Es ist ein internes System für Politiker und städtische Mitarbeiter, das ihnen bei ihrer Arbeit hilft. Deine Stadt ist die deutsche Stadt Freiburg.
 
         Die Aufgabe der ETL-Pipeline ist es, die Dateien für die Vektorsuche vorzubereiten, also Parsing, Bereinigung, Chunking, Embedding.
 
@@ -60,7 +60,7 @@ class FileSectionizer:
         - Schaue dir das angegebene Dokument genau an und finde heraus, um welchen der folgenden Inhaltstypen es sich handelt:
             - „NOT_RELATED_TOPICS": Dokument, welches mehrere Themen enthält, die nicht miteinander verwandt sind. Zum Beispiel Sitzungsprotokolle, bei denen es um sehr unterschiedliche Tagesordnungspunkte geht. Auch mehrere Bauanträge sind zum Beispiel alle nicht miteinander verwandt und sollten deswegen getrennt werden.
             - „RELATED_TOPICS": Dokument, welches sich mit einem bestimmten Thema befasst, vielleicht auch mit vielen Unterthemen, aber die meisten davon beziehen sich auf ein großes Thema.
-            - „OTHER": Dokument, das weitere Analyse benötigt, weil es sich um ein Thema handelt, das nicht durch Text extrahiert werden kann. Zum Beispiel grafische Übersichten von Wahlergebnissen.
+            - „OTHER": Dokument, das weitere Analyse benötigt, weil es sich um ein Thema handelt, das nicht durch Text extrahiert werden kann. Zum Beispiel grafische Übersichten von Wahlergebnissen, Kalendar, große Tabellen, etc.
         - Antworte mit dem Inhaltstypen und einer kurzen Begründung, warum du diesen Typ ausgewählt hast.
         - Wenn es sich um den Inhaltstypen „NOT_RELATED_TOPICS" handelt, gib die Zeilennummern an, an denen das Dokument aufgeteilt werden sollte.
             - In jeder Sektion sollte es dann nur noch um ein größeres Thema gehen. Jede Sektion kann auch wieder mehere Themen beinhalten, aber diese sollten dann eher Unterthemen des größeren Themas sein.

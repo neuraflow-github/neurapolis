@@ -59,8 +59,8 @@ async def extract_document(file: UploadFile = File(...)):
             }
             stripped_elements.append(stripped_element)
         return JSONResponse(content={"elements": stripped_elements})
-    except Exception as e:
-        return JSONResponse(content={"error": str(e)}, status_code=500)
+    except Exception as exception:
+        return JSONResponse(content={"error": str(exception)}, status_code=500)
     finally:
         if os.path.exists(temp_file_path):
             os.remove(temp_file_path)

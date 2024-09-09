@@ -1,4 +1,6 @@
 __pycache__/
 .DS_Store
 .env
+.ipynb_checkpoints
+.langgraph-data
 .venv/

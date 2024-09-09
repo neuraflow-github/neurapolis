@@ -9,6 +9,8 @@ from PyPDF2 import PdfReader, PdfWriter
 from etl.config import config
 from etl.models.file import File
 
+from .file_uploader import FileUploader
+
 
 class FileTextExtractor:
     def extract_file_text(self, file: File, temp_file_dir_path: str):
@@ -31,17 +33,19 @@ class FileTextExtractor:
         pages_dir_path = os.path.join(temp_file_dir_path, "pages")
         os.makedirs(pages_dir_path, exist_ok=True)
         pdf_reader = PdfReader(file_pdf_file_path)
+        page_count = len(pdf_reader.pages)
         logging.info(
-            f"{self.__class__.__name__}: File: {file.id}: Found {len(pdf_reader.pages)} pages"
+            f"{self.__class__.__name__}: File: {file.id}: Found {page_count} pages"
         )
-        if len(pdf_reader.pages) > 20:
+        if page_count > 20:
             logging.error(
-                f"{self.__class__.__name__}: File: {file.id}: Found {len(pdf_reader.pages)} pages. This is too many pages to extract text from."
+                f"{self.__class__.__name__}: File: {file.id}: Found {page_count} pages. This is too many pages to extract text from."
             )
+            FileUploader().set_file_page_count(file, page_count)
             raise Exception(
-                f"{self.__class__.__name__}: File: {file.id}: Found {len(pdf_reader.pages)} pages. This is too many pages to extract text from."
+                f"{self.__class__.__name__}: File: {file.id}: Found {page_count} pages. This is too many pages to extract text from."
             )
-        for page_index in range(len(pdf_reader.pages)):
+        for page_index in range(page_count):
             logging.info(
                 f"{self.__class__.__name__}: File: {file.id}: Page {page_index}: Started extracting page text"
             )
@@ -54,10 +58,19 @@ class FileTextExtractor:
                 pdf_writer.write(file_page_file)
             with open(page_file_path, "rb") as file_page_file:
                 page_request_response = requests.post(
-                    config.unstructured_api_url + "/extract-document",
-                    files={"file": file_page_file},
+                    "https://api.unstructuredapp.io/general/v0/general",
+                    headers={
+                        "accept": "application/json",
+                        "Content-Type": "multipart/form-data",
+                        "unstructured-api-key": "7LrPgi78ECkbH5cLQ1PHFYYlAtKdOL",
+                    },
+                    files={"files": file_page_file},
+                    timeout=30,
                 )
             page_request_response.raise_for_status()
+            page_request_json = page_request_response.json()
+            print(page_request_json)
+            raise Exception("test")
             text_elements_yaml_file_path = os.path.join(
                 page_dir_path, "text_elements.yaml"
             )

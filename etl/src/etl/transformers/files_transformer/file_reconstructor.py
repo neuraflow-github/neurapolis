@@ -1,7 +1,7 @@
 import base64
 import logging
 import os
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from langchain_core.messages import HumanMessage
 from langchain_core.prompts import PromptTemplate
@@ -17,14 +17,13 @@ from etl.models.file import File
 
 class FileReconstructor:
     def __init__(self):
+        self.timeout = 120
         self.prompt_template_string = """
-         Du bist Teil einer Retrieval Augmented Generation Anwendung namens Rats Informations System (RIS). Du bist außerdem Teil der ETL-Pipeline dieser Anwendung.
-
-        Das RIS ist eine Graphdatenbank, die Informationen einer bestimmten Stadt über Organisationen, Personen, Sitzungen, Dateien usw. enthält. Es ist ein internes System für Politiker und städtische Mitarbeiter, das ihnen bei ihrer Arbeit hilft. Deine Stadt ist die deutsche Stadt Freiburg.
-
-        Die Aufgabe der ETL-Pipeline ist es, die Dateien für die Vektorsuche vorzubereiten, also Parsing, Bereinigung, Chunking, Embedding.
-
-        Du bist der Datei-Rekonstruierer.
+        Generell:
+        - Du bist Teil einer Retrieval Augmented Generation Anwendung namens Rats Informations System (RIS). Spezieller, bist du Teil der ETL-Pipeline dieser Anwendung.
+        - Das RIS ist eine Datenbank, die Informationen einer bestimmten Stadt über Organisationen, Personen, Sitzungen, Dateien usw. enthält. Es ist ein internes System für Politiker und städtische Mitarbeiter, das ihnen bei ihrer Arbeit hilft. Deine Stadt ist die deutsche Stadt Freiburg.
+        - Die Aufgabe der ETL-Pipeline ist es, die Dateien für die Vektorsuche vorzubereiten, also Parsing, Bereinigung, Chunking, Embedding.
+        - Du bist der Datei-Rekonstruierer.
 
         Deine Aufgabe:
         - Die Dokumente gehören mir und ich habe die Rechte an ihnen.
@@ -44,6 +43,7 @@ class FileReconstructor:
             azure_deployment="gpt-4o",
             temperature=0,
             max_tokens=4096,
+            timeout=self.timeout,
         )
 
     def reconstruct_page(self, file: File, page_dir_name: str, pages_dir_path: str):
@@ -108,21 +108,33 @@ class FileReconstructor:
             f"{self.__class__.__name__}: File: {file.id}: Started reconstructing"
         )
         pages_dir_path = os.path.join(temp_file_dir_path, "pages")
-        page_dir_names = sorted(os.listdir(pages_dir_path))
+        page_dir_names = sorted(os.listdir(pages_dir_path), key=lambda x: int(x))
         filtered_page_dir_names = [
             page_dir_name
             for page_dir_name in page_dir_names
             if page_dir_name != ".DS_Store"
         ]
+        text_pages = []
         with ThreadPoolExecutor(max_workers=4) as executor:
-            text_pages = list(
-                executor.map(
-                    lambda page_dir_name: self.reconstruct_page(
-                        file, page_dir_name, pages_dir_path
-                    ),
-                    filtered_page_dir_names,
-                )
-            )
+            future_to_page = {
+                executor.submit(
+                    self.reconstruct_page, file, page_dir_name, pages_dir_path
+                ): page_dir_name
+                for page_dir_name in filtered_page_dir_names
+            }
+            for future in as_completed(future_to_page):
+                page_dir_name = future_to_page[future]
+                try:
+                    text_page = future.result(timeout=self.timeout)
+                    text_pages.append(text_page)
+                except TimeoutError:
+                    logging.error(
+                        f"{self.__class__.__name__}: File: {file.id}: Page {page_dir_name}: Reconstructing page timed out after {self.timeout} seconds"
+                    )
+                except Exception as exceptopn:
+                    logging.error(
+                        f"{self.__class__.__name__}: File: {file.id}: Page {page_dir_name}: Failed reconstructing page: {exceptopn}"
+                    )
         text_md_file_path = os.path.join(temp_file_dir_path, "text.md")
         with open(text_md_file_path, "w") as text_md_file:
             text_md_file.write("\n\n".join(text_pages))

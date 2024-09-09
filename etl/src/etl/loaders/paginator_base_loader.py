@@ -34,8 +34,10 @@ class PaginatorBaseLoader(BaseLoader[T]):
                 return None
             response.raise_for_status()
             return response.json()
-        except requests.RequestException as e:
-            logging.error(f"{self.__class__.__name__}: Failed to fetch page {url}: {e}")
+        except requests.RequestException as exception:
+            logging.error(
+                f"{self.__class__.__name__}: Failed fetching page {url}: {exception}"
+            )
             return None
 
     def _load_basic_items(self) -> List[T]:

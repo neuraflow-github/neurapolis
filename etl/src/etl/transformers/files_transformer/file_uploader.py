@@ -20,6 +20,8 @@ class FileUploader:
         logging.info(
             f"{self.__class__.__name__}: File: {file.id}: Started uploading file"
         )
+        pages_dir_path = os.path.join(temp_file_dir_path, "pages")
+        page_count = len(os.listdir(pages_dir_path))
         text_md_file_path = os.path.join(temp_file_dir_path, "text.md")
         with open(text_md_file_path, "r") as text_md_file:
             text = text_md_file.read()
@@ -34,6 +36,7 @@ class FileUploader:
             )
         self.update_file(
             file,
+            page_count,
             text,
             sectionizer_result.type,
             sectionizer_result.reason,
@@ -55,14 +58,20 @@ class FileUploader:
         )
 
     def update_file(
-        self, file: File, text: str, sectionizer_type: str, sectionizer_reason: str
+        self,
+        file: File,
+        page_count: int,
+        text: str,
+        sectionizer_type: str,
+        sectionizer_reason: str,
     ):
         logging.info(
             f"{self.__class__.__name__}: File: {file.id}: Started updating file"
         )
         db_query = """
         MATCH (file_node:File {id: $file_id})
-        SET file_node.extracted_text = $extracted_text,
+        SET file_node.page_count = $page_count,
+            file_node.extracted_text = $extracted_text,
             file_node.sectionizer_type = $sectionizer_type,
             file_node.sectionizer_reason = $sectionizer_reason
         """
@@ -70,6 +79,7 @@ class FileUploader:
             db_session.run(
                 db_query,
                 file_id=file.id,
+                page_count=page_count,
                 extracted_text=text,
                 sectionizer_type=sectionizer_type,
                 sectionizer_reason=sectionizer_reason,
@@ -175,4 +185,18 @@ class FileUploader:
             db_session.run(db_query, pairs=pairs)
         logging.info(
             f"{self.__class__.__name__}: File: {file.id}: Finished uploading FILE_SECTION_HAS_FILE_CHUNK relationships"
+        )
+
+    def set_file_page_count(self, file: File, page_count: int):
+        logging.info(
+            f"{self.__class__.__name__}: File: {file.id}: Started setting file page count"
+        )
+        db_query = """
+        MATCH (file_node:File {id: $file_id})
+        SET file_node.page_count = $page_count
+        """
+        with db_session_builder.build() as db_session:
+            db_session.run(db_query, file_id=file.id, page_count=page_count)
+        logging.info(
+            f"{self.__class__.__name__}: File: {file.id}: Finished setting file page count"
         )

@@ -1,11 +1,12 @@
+import logging
 import os
 import sys
-from dotenv import load_dotenv
-from tqdm import tqdm
-from neo4j import GraphDatabase
-from langchain_openai import AzureOpenAIEmbeddings
 import time
-import logging
+
+from dotenv import load_dotenv
+from langchain_openai import AzureOpenAIEmbeddings
+from neo4j import GraphDatabase
+from tqdm import tqdm
 
 # Set up logging
 logging.basicConfig(
@@ -124,7 +125,7 @@ def process_file_chunks():
                             time.sleep(2**attempt)  # Exponential backoff
                         else:
                             logging.error(
-                                f"Failed to process chunk {chunk_id} after {max_retries} attempts. Error: {str(e)}"
+                                f"Failed processing chunk {chunk_id} after {max_retries} attempts. Error: {str(e)}"
                             )
 
         offset += 25
