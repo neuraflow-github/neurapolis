@@ -7,6 +7,27 @@ from .ris_api_dto import RisApiDto
 
 
 class AgendaItem(RisApiDto, DbDict):
+    id: Optional[str]
+    type: Optional[str]
+    meeting: Optional[str]
+    number: Optional[str]
+    order: Optional[int]
+    name: Optional[str]
+    public: Optional[bool]
+    consultation: Optional[str]
+    result: Optional[str]
+    resolution_text: Optional[str]
+    resolution_file: Optional[File]
+    auxiliary_file: Optional[List[File]]
+    start: Optional[datetime]
+    end: Optional[datetime]
+    license: Optional[str]
+    keyword: Optional[List[str]]
+    created: Optional[datetime]
+    modified: Optional[datetime]
+    web: Optional[str]
+    deleted: Optional[bool]
+
     def __init__(
         self,
         id: Optional[str],

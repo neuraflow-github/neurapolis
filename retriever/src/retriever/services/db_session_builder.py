@@ -3,7 +3,7 @@ from typing import Generator
 
 from neo4j import Driver, GraphDatabase, Session
 
-from etl.config import config
+from retriever.config import config
 
 
 class DbSessionBuilder:

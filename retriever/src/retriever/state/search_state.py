@@ -1,11 +1,15 @@
-from pydantic import BaseModel
+import uuid
 
-from .file_state import FileState
+from pydantic import BaseModel, Field
+
+from .hit_state import HitState
+from .search_step import SearchStep
 from .search_type import SearchType
 
 
 class SearchState(BaseModel):
-    id: str
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    state: SearchStep = Field(default=SearchStep.INITIAL)
     type: SearchType
     query: str
-    files: list[FileState] = []
+    hits: list[HitState] = Field(default=[])

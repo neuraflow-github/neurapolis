@@ -5,6 +5,12 @@ from .db_dict import DbDict
 
 
 class FileSection(DbDict):
+    id: Optional[str]
+    file_id: Optional[str]
+    text: Optional[str]
+    created_at: Optional[datetime]
+    modified_at: Optional[datetime]
+
     def __init__(
         self,
         id: Optional[str],

@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Dict, List, Optional
 
 from .db_dict import DbDict
@@ -5,7 +6,32 @@ from .membership import Membership
 from .ris_api_dto import RisApiDto
 
 
-class Person(RisApiDto):
+class Person(RisApiDto, DbDict):
+    id: Optional[str]
+    type: Optional[str]
+    body: Optional[str]
+    name: Optional[str]
+    family_name: Optional[str]
+    given_name: Optional[str]
+    form_of_address: Optional[str]
+    affix: Optional[str]
+    title: Optional[List[Optional[str]]]
+    gender: Optional[str]
+    phone: Optional[List[Optional[str]]]
+    email: Optional[List[Optional[str]]]
+    location: Optional[str]
+    location_object: Optional[str]
+    status: Optional[List[Optional[str]]]
+    membership: Optional[List[Membership]]
+    life: Optional[str]
+    life_source: Optional[str]
+    license: Optional[str]
+    keyword: Optional[List[Optional[str]]]
+    created: Optional[datetime]
+    modified: Optional[datetime]
+    web: Optional[str]
+    deleted: Optional[bool]
+
     def __init__(
         self,
         id: Optional[str] = None,
