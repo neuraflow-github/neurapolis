@@ -3,4 +3,4 @@ from pydantic import BaseModel
 
 class GradingState(BaseModel):
     is_relevant: bool
-    reason: str
+    feedback: str

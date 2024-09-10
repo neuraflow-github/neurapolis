@@ -7,9 +7,11 @@ class FileSectionState(BaseModel):
     text: str
 
     @classmethod
-    def from_db_dict(cls, db_dict: dict) -> "FileSectionState":
+    def from_db_dict(
+        cls, file_section_db_dict: dict, file_id: str
+    ) -> "FileSectionState":
         return cls(
-            id=db_dict.get("id"),
-            file_id=db_dict.get("file_id"),
-            text=db_dict.get("text"),
+            id=file_section_db_dict.get("id"),
+            file_id=file_id,
+            text=file_section_db_dict.get("text"),
         )

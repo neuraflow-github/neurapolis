@@ -7,6 +7,7 @@ from retriever.state.file_chunk_state import FileChunkState
 from retriever.state.hit_state import HitState
 from retriever.state.hit_step import HitStep
 from retriever.state.search_state import SearchState
+from retriever.state.search_step import SearchStep
 
 """
 WITH genai, vector. encode("Bau", "AzureOpenAI", {
@@ -21,24 +22,35 @@ WHERE p. reference = 'BaUStA-24/004' and fc. embedding IS NOT NULL
 
 
 def retriever_node(search_state: SearchState, config: RunnableConfig):
-    print("YXCVYXCV")
-    print(config["configurable"])
+    # print("YXCVYXCV")
+    # print(config["configurable"])
     with db_session_builder.build() as db_session:
-        db_query = f"""
-        MATCH (file_chunk_node:FileChunk)
-        RETURN file_chunk_node
-        LIMIT 10
+        # TODO use variables here
+        db_query = """
+        WITH genai.vector.encode($user_query, "AzureOpenAI", {
+            token: "8ec005db5f0e4b32bbac0616b95d9391",
+            resource: "neuraflow-swedencentral",
+            deployment: "text-embedding-ada-002"
+        }) AS query_vector
+        MATCH (file_chunk_node:FileChunk)<-[:FILE_SECTION_HAS_FILE_CHUNK]-(file_section_node:FileSection)
+        RETURN file_chunk_node, file_section_node.id AS file_section_id, vector.similarity.cosine(file_chunk_node.embedding, query_vector) AS similarity
+        ORDER BY similarity DESC
+        LIMIT $limit
         """
-        print(db_query)
-        file_chunks_db_result = db_session.run(db_query)
+        file_chunk_db_results = db_session.run(
+            db_query,
+            user_query=search_state.query,
+            azure_open_ai_api_key=retriever_config.azure_openai_api_key,
+            azure_open_ai_resource=retriever_config.azure_openai_resource,
+            limit=10,
+        )
         file_chunks: list[FileChunkState] = []
-        for x_file_chunk_db_dict in file_chunks_db_result:
+        for x_file_chunk_db_result in file_chunk_db_results:
             file_chunk = FileChunkState.from_db_dict(
-                x_file_chunk_db_dict["file_chunk_node"]
+                x_file_chunk_db_result["file_chunk_node"],
+                x_file_chunk_db_result["file_section_id"],
             )
             file_chunks.append(file_chunk)
-        print("JHGFJHGF")
-        print(file_chunks)
     hits: list[HitState] = []
     for file_chunk in file_chunks:
         hit = HitState(
@@ -46,5 +58,6 @@ def retriever_node(search_state: SearchState, config: RunnableConfig):
             file_chunk=file_chunk,
         )
         hits.append(hit)
+    search_state.step = SearchStep.RETRIEVED
     search_state.hits = hits
     return {"searches": [search_state]}

@@ -35,10 +35,10 @@ class FilesTransformer:
                 ORDER BY file_node.id
                 LIMIT $limit
                 """
-                files_db_result = db_session.run(db_query, limit=500)
+                file_db_results = db_session.run(db_query, limit=500)
             files: list[File] = []
-            for x_file_db_dict in files_db_result:
-                file = File.from_db_dict(x_file_db_dict["file"])
+            for x_file_db_result in file_db_results:
+                file = File.from_db_dict(x_file_db_result["file_node"])
                 files.append(file)
             for x_file in files:
                 try:

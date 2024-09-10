@@ -25,7 +25,7 @@ graph_builder.add_node("planner", planner_node)
 graph_builder.add_node("retriever", retriever_node)
 graph_builder.add_node("cleaner", cleaner_node)
 graph_builder.add_node("relevance_grader", relevance_grader_node)
-graph_builder.add_node("related_data_gatherer", related_data_gatherer_node)
+# graph_builder.add_node("related_data_gatherer", related_data_gatherer_node)
 
 graph_builder.set_entry_point("setup")
 graph_builder.add_edge("setup", "planner")
@@ -38,11 +38,12 @@ graph_builder.add_conditional_edges(
     after_cleaner_edge_continute_to_relevance_graders_edge,
     ["relevance_grader"],
 )
-graph_builder.add_conditional_edges(
-    "relevance_grader",
-    after_relevance_grader_continue_to_related_data_gatherer_edge,
-    ["related_data_gatherer"],
-)
-graph_builder.add_edge("related_data_gatherer", END)
+graph_builder.add_edge("relevance_grader", END)
+# graph_builder.add_conditional_edges(
+#     "relevance_grader",
+#     after_relevance_grader_continue_to_related_data_gatherer_edge,
+#     ["related_data_gatherer"],
+# )
+# graph_builder.add_edge("related_data_gatherer", END)
 
 graph = graph_builder.compile()

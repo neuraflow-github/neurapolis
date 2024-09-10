@@ -9,7 +9,7 @@ from .search_type import SearchType
 
 class SearchState(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    state: SearchStep = Field(default=SearchStep.INITIAL)
+    step: SearchStep
     type: SearchType
     query: str
     hits: list[HitState] = Field(default=[])

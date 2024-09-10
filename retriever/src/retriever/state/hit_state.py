@@ -15,7 +15,7 @@ class HitState(BaseModel):
     step: HitStep
     file_chunk: FileChunkState
     file_section: Optional[FileSectionState] = Field(default=None)
-    is_doubled: Optional[bool] = Field(default=None)
+    doubled_hit: Optional["HitState"] = Field(default=None)
     text: Optional[str] = Field(default=None)
     node_data: Optional[dict] = Field(default=None)
     grading: Optional[GradingState] = Field(default=None)

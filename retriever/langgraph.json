@@ -1,11 +1,11 @@
 {
-  "dockerfile_lines": [],
+  "dockerfile_lines": [
+    "RUN apt-get update && apt-get install -y g++ build-essential"
+  ],
   "graphs": {
     "retriever": "./src/retriever/graph.py:graph"
   },
   "env": ".env",
-  "python_version": "3.11",
-  "dependencies": [
-    "."
-  ]
+  "python_version": "3.12",
+  "dependencies": ["."]
 }

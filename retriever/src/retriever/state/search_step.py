@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class SearchStep(Enum):
-    INITIAL = "INITIAL"
+    PLANNED = "PLANNED"
     RETRIEVED = "RETRIEVED"
     CLEANED = "CLEANED"
     RELEVANCE_GRADED = "RELEVANCE_GRADED"

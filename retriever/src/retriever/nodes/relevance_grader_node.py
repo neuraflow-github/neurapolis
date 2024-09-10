@@ -9,6 +9,7 @@ from retriever.state.grading_state import GradingState
 from retriever.state.hit_state import HitState
 from retriever.state.hit_step import HitStep
 from retriever.state.search_state import SearchState
+from retriever.state.search_step import SearchStep
 from retriever.utilities.generate_grading_llm_data_model import (
     generate_grading_llm_data_model,
 )
@@ -76,22 +77,31 @@ def relevance_grader_node(search_state: SearchState):
         | prompt_template
         | structured_llm
     )
-    unique_hits = filter(lambda x_hit: not x_hit.is_doubled, search_state.hits)
+    unique_hits = list(
+        filter(
+            lambda x_hit: x_hit.step == HitStep.FILE_SECTION_RETRIEVED,
+            search_state.hits,
+        )
+    )
+    if len(unique_hits) == 0:
+        search_state.step = SearchStep.RELEVANCE_GRADED
+        return {"searches": [search_state]}
     response = chain.invoke(
         {
             "query": search_state.query,
             "hits": unique_hits,
         }
     )
-    for unique_hit_index, unique_hit in enumerate(unique_hits):
-        for hit in search_state.hits:
-            if hit.id != unique_hit.id:
+    for x_unique_hit_index, x_unique_hit in enumerate(unique_hits):
+        for y_hit in search_state.hits:
+            if y_hit.id != x_unique_hit.id:
                 continue
-            is_relevant = getattr(response, f"is_hit_{unique_hit_index+1}_relevant")
-            feedback = getattr(response, f"hit_{unique_hit_index+1}_feedback")
-            hit.grading = GradingState(
+            is_relevant = getattr(response, f"is_hit_{x_unique_hit_index+1}_relevant")
+            feedback = getattr(response, f"hit_{x_unique_hit_index+1}_feedback")
+            y_hit.grading = GradingState(
                 is_relevant=is_relevant,
                 feedback=feedback,
             )
-            hit.state = HitStep.RELEVANCE_GRADED
+            y_hit.step = HitStep.RELEVANCE_GRADED
+    search_state.step = SearchStep.RELEVANCE_GRADED
     return {"searches": [search_state]}

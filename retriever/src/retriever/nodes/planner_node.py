@@ -7,6 +7,7 @@ from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
 
 from retriever.state.search_state import SearchState
+from retriever.state.search_step import SearchStep
 from retriever.state.search_type import SearchType
 from retriever.state.state import State
 
@@ -71,6 +72,7 @@ def planner_node(state: State):
     )
     searches: list[SearchState] = []
     query_search = SearchState(
+        step=SearchStep.PLANNED,
         type=SearchType.VECTOR,
         query=state.query,
     )
@@ -79,6 +81,7 @@ def planner_node(state: State):
     capped_keyword_search_queries = response.keyword_search_queries[:1]
     for x_vector_search_query in capped_vector_search_queries:
         search = SearchState(
+            step=SearchStep.PLANNED,
             type=SearchType.VECTOR,
             query=x_vector_search_query,
         )
@@ -86,6 +89,7 @@ def planner_node(state: State):
     capped_keyword_search_queries = capped_keyword_search_queries[:5]
     for x_keyword_search_query in capped_keyword_search_queries:
         search = SearchState(
+            step=SearchStep.PLANNED,
             type=SearchType.KEYWORD,
             query=x_keyword_search_query,
         )
