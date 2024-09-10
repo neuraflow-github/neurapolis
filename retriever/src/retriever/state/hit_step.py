@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class HitStep(Enum):
+    INITIAL = "INITIAL"
     RETRIEVED = "RETRIEVED"
     DOUBLED = "DOUBLED"
     NOT_DOUBLED = "NOT_DOUBLED"
