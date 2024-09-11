@@ -6,6 +6,21 @@ from .ris_api_dto import RisApiDto
 
 
 class Consultation(RisApiDto, DbDict):
+    id: Optional[str]
+    type: Optional[str]
+    paper: Optional[str]
+    agenda_item: Optional[str]
+    meeting: Optional[str]
+    organization: Optional[List[str]]
+    authoritative: Optional[bool]
+    role: Optional[str]
+    license: Optional[str]
+    keyword: Optional[List[str]]
+    created: Optional[datetime]
+    modified: Optional[datetime]
+    web: Optional[str]
+    deleted: Optional[bool]
+
     def __init__(
         self,
         id: Optional[str],

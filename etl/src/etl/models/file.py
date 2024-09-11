@@ -6,6 +6,32 @@ from .ris_api_dto import RisApiDto
 
 
 class File(RisApiDto, DbDict):
+    id: Optional[str]
+    type: Optional[str]
+    name: Optional[str]
+    file_name: Optional[str]
+    mime_type: Optional[str]
+    date: Optional[str]
+    size: Optional[int]
+    sha1_checksum: Optional[str]
+    sha512_checksum: Optional[str]
+    text: Optional[str]
+    access_url: Optional[str]
+    download_url: Optional[str]
+    external_service_url: Optional[str]
+    master_file: Optional[str]
+    derivative_file: Optional[List[str]]
+    file_license: Optional[str]
+    meeting: Optional[List[str]]
+    agenda_item: Optional[List[str]]
+    paper: Optional[List[str]]
+    license: Optional[str]
+    keyword: Optional[List[str]]
+    created: Optional[datetime]
+    modified: Optional[datetime]
+    web: Optional[str]
+    deleted: Optional[bool]
+
     def __init__(
         self,
         id: Optional[str],

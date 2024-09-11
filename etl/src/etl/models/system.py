@@ -6,6 +6,23 @@ from .ris_api_dto import RisApiDto
 
 
 class System(RisApiDto, DbDict):
+    id: Optional[str]
+    type: Optional[str]
+    oparl_version: Optional[str]
+    other_oparl_versions: Optional[List[str]]
+    license: Optional[str]
+    body: Optional[str]
+    name: Optional[str]
+    contact_email: Optional[str]
+    contact_name: Optional[str]
+    website: Optional[str]
+    vendor: Optional[str]
+    product: Optional[str]
+    created: Optional[datetime]
+    modified: Optional[datetime]
+    web: Optional[str]
+    deleted: Optional[bool]
+
     def __init__(
         self,
         id: Optional[str],

@@ -1,10 +1,27 @@
+from datetime import datetime
 from typing import Dict, List, Optional
 
 from .db_dict import DbDict
 from .ris_api_dto import RisApiDto
 
 
-class Membership(RisApiDto):
+class Membership(RisApiDto, DbDict):
+    id: Optional[str]
+    type: Optional[str]
+    person: Optional[str]
+    organization: Optional[str]
+    role: Optional[str]
+    voting_right: Optional[bool]
+    start_date: Optional[str]
+    end_date: Optional[str]
+    on_behalf_of: Optional[str]
+    license: Optional[str]
+    keyword: Optional[List[str]]
+    created: Optional[datetime]
+    modified: Optional[datetime]
+    web: Optional[str]
+    deleted: Optional[bool]
+
     def __init__(
         self,
         id: Optional[str],

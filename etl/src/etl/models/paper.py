@@ -8,7 +8,31 @@ from .location import Location
 from .ris_api_dto import RisApiDto
 
 
-class Paper(RisApiDto):
+class Paper(RisApiDto, DbDict):
+    id: Optional[str]
+    type: Optional[str]
+    body: Optional[str]
+    name: Optional[str]
+    reference: Optional[str]
+    date: Optional[str]
+    paper_type: Optional[str]
+    related_paper: Optional[List[str]]
+    superordinated_paper: Optional[List[str]]
+    subordinated_paper: Optional[List[str]]
+    main_file: Optional[File]
+    auxiliary_file: Optional[List[File]]
+    location: Optional[List[Location]]
+    originator_person: Optional[List[str]]
+    under_direction_of: Optional[List[str]]
+    originator_organization: Optional[List[str]]
+    consultation: Optional[List[Consultation]]
+    license: Optional[str]
+    keyword: Optional[List[str]]
+    created: Optional[datetime]
+    modified: Optional[datetime]
+    web: Optional[str]
+    deleted: Optional[bool]
+
     def __init__(
         self,
         id: Optional[str],

@@ -29,7 +29,7 @@ class FileSectionsChunker:
             strip_headers=False,
         )
         self.recursive_character_text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=500, chunk_overlap=50
+            chunk_size=1024, chunk_overlap=128
         )
 
     def chunk_file(self, file: File, temp_file_dir_path: str):

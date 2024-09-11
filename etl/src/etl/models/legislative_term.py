@@ -6,6 +6,20 @@ from .ris_api_dto import RisApiDto
 
 
 class LegislativeTerm(RisApiDto, DbDict):
+    id: Optional[str]
+    url: Optional[str]
+    type: Optional[str]
+    body: Optional[str]
+    name: Optional[str]
+    start_date: Optional[str]
+    end_date: Optional[str]
+    license: Optional[str]
+    keyword: Optional[List[str]]
+    created: Optional[datetime]
+    modified: Optional[datetime]
+    web: Optional[str]
+    deleted: Optional[bool]
+
     def __init__(
         self,
         id: Optional[str],

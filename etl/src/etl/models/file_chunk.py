@@ -5,6 +5,12 @@ from .db_dict import DbDict
 
 
 class FileChunk(DbDict):
+    id: Optional[str]
+    file_section_id: Optional[str]
+    text: Optional[str]
+    created_at: Optional[datetime]
+    modified_at: Optional[datetime]
+
     def __init__(
         self,
         id: Optional[str],

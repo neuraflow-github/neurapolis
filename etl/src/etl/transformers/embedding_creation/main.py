@@ -14,7 +14,7 @@ logging.basicConfig(
 )
 
 # Set PYTHONPATH at the start of the script
-sys.path.insert(0, "/Users/pascal/ris/")
+# sys.path.insert(0, "/Users/pascal/ris/")
 
 # Load environment variables
 load_dotenv(override=True)

@@ -7,8 +7,10 @@ from etl.config import config
 
 
 class DbSessionBuilder:
+    driver: Driver | None
+
     def __init__(self):
-        self.driver: Driver | None = None
+        self.driver = None
 
     @contextmanager
     def build(self) -> Generator[Session, None, None]:

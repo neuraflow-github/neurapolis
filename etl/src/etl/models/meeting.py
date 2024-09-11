@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Dict, List, Optional
 
 from .agenda_item import AgendaItem
@@ -8,6 +9,28 @@ from .ris_api_dto import RisApiDto
 
 
 class Meeting(RisApiDto, DbDict):
+    id: Optional[str]
+    type: Optional[str]
+    name: Optional[str]
+    meeting_state: Optional[str]
+    cancelled: Optional[bool]
+    start: Optional[str]
+    end: Optional[str]
+    location: Optional[Location]
+    organization: Optional[List[str]]
+    participant: Optional[List[str]]
+    invitation: Optional[File]
+    results_protocol: Optional[File]
+    verbatim_protocol: Optional[File]
+    auxiliary_file: Optional[List[File]]
+    agenda_item: Optional[List[AgendaItem]]
+    license: Optional[str]
+    keyword: Optional[List[str]]
+    created: Optional[datetime]
+    modified: Optional[datetime]
+    web: Optional[str]
+    deleted: Optional[bool]
+
     def __init__(
         self,
         id: Optional[str],

@@ -5,7 +5,28 @@ from .db_dict import DbDict
 from .ris_api_dto import RisApiDto
 
 
-class Location(RisApiDto):
+class Location(RisApiDto, DbDict):
+    id: Optional[str]
+    type: Optional[str]
+    description: Optional[str]
+    geojson: Optional[Dict]
+    street_address: Optional[str]
+    room: Optional[str]
+    postal_code: Optional[str]
+    sub_locality: Optional[str]
+    locality: Optional[str]
+    bodies: Optional[List[str]]
+    organizations: Optional[List[str]]
+    persons: Optional[List[str]]
+    meetings: Optional[List[str]]
+    papers: Optional[List[str]]
+    license: Optional[str]
+    keyword: Optional[List[str]]
+    created: Optional[datetime]
+    modified: Optional[datetime]
+    web: Optional[str]
+    deleted: Optional[bool]
+
     def __init__(
         self,
         id: Optional[str],

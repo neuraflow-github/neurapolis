@@ -8,6 +8,39 @@ from .ris_api_dto import RisApiDto
 
 
 class Body(RisApiDto, DbDict):
+    id: Optional[str]
+    type: Optional[str]
+    system: Optional[str]
+    short_name: Optional[str]
+    name: Optional[str]
+    website: Optional[str]
+    license: Optional[str]
+    license_valid_since: Optional[datetime]
+    oparl_since: Optional[datetime]
+    ags: Optional[str]
+    rgs: Optional[str]
+    equivalent: Optional[List[str]]
+    contact_email: Optional[str]
+    contact_name: Optional[str]
+    organization: Optional[str]
+    person: Optional[str]
+    meeting: Optional[str]
+    paper: Optional[str]
+    legislative_term: Optional[List[LegislativeTerm]]
+    agenda_item: Optional[str]
+    consultation: Optional[str]
+    file: Optional[str]
+    location_list: Optional[str]
+    legislative_term_list: Optional[str]
+    membership: Optional[str]
+    classification: Optional[str]
+    location: Optional[Location]
+    keyword: Optional[List[str]]
+    created: Optional[datetime]
+    modified: Optional[datetime]
+    web: Optional[str]
+    deleted: Optional[bool]
+
     def __init__(
         self,
         id: Optional[str],
