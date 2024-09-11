@@ -40,7 +40,7 @@ def cleaner_node(state: State):
 
     # Download the file sections
     with db_session_builder.build() as db_session:
-        file_section_db_results = db_session.run(
+        db_results = db_session.run(
             """
             MATCH (file_node:File)-[:FILE_HAS_FILE_SECTION]->(file_section_node:FileSection)
             WHERE file_section_node.id IN $file_section_ids
@@ -49,13 +49,12 @@ def cleaner_node(state: State):
             file_section_ids=unique_required_file_section_ids,
         )
         file_sections: list[FileSectionState] = []
-        for file_section_db_result in file_section_db_results:
-            file_sections.append(
-                FileSectionState.from_db_dict(
-                    file_section_db_result["file_section_node"],
-                    file_section_db_result["file_id"],
-                )
+        for x_db_result in db_results:
+            file_section = FileSectionState.from_db_dict(
+                x_db_result["file_section_node"],
+                x_db_result["file_id"],
             )
+            file_sections.append(file_section)
 
     # Assign the file sections to the hits
     for x_search in state.searches:

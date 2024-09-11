@@ -38,7 +38,7 @@ def planner_node(state: State):
     - Deine Aufgabe ist es, die Nutzeranfrage in spezifischere, genauere, abzielendere Suchanfragen zu konvertieren.
     - Diese Suchanfragen können entweder Vektorsuchen sein oder Keywordsuchen.
         - Vektorsuchen: Diese sollten zwar spezifischer sein, aber trotzdem noch einen sehr guten Detailgrad haben und ganze Sätz sein.
-        - Keywordsuchen: Diese sollten auf spezielle Keywords abzielen, welche auch gute Ergebnisse liefern könnten. Zum Beispiel eine Referenz auf ein Dokument oder ein Name einer Person. Längere Phrasen und Wörter, welche sowieso oft vorkommen, sollten vermieden werden, da diese keine Keywordsuche wert sind.
+        - Keywordsuchen: Diese sollten auf spezielle Keywords abzielen, welche auch gute Ergebnisse liefern könnten. Zum Beispiel eine Referenz auf ein Dokument oder ein Name einer Person. Sätze und Wörter, welche sowieso oft vorkommen, sollten vermieden werden, da diese keine Keywordsuche wert sind. Es geht hier wirklich eher um spzielle Leute, Objekte, Gebäude oder Orte zum Beispiel. Sollte nur ein Wort sein.
     - Gebe mindestens 1 Suchanfrage an und maximal 5 pro Typ.
     - Deine Antwort geht an den "Retriever"-Mitarbeiter, welcher dann die Dokumente aus der Graphdatenbank holt.
 
@@ -77,8 +77,7 @@ def planner_node(state: State):
         query=state.query,
     )
     searches.append(query_search)
-    capped_vector_search_queries = response.vector_search_querires[:1]
-    capped_keyword_search_queries = response.keyword_search_queries[:1]
+    capped_vector_search_queries = response.vector_search_querires[:5]
     for x_vector_search_query in capped_vector_search_queries:
         search = SearchState(
             step=SearchStep.PLANNED,
@@ -86,7 +85,7 @@ def planner_node(state: State):
             query=x_vector_search_query,
         )
         searches.append(search)
-    capped_keyword_search_queries = capped_keyword_search_queries[:5]
+    capped_keyword_search_queries = response.keyword_search_queries[:5]
     for x_keyword_search_query in capped_keyword_search_queries:
         search = SearchState(
             step=SearchStep.PLANNED,
