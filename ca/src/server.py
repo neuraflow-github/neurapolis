@@ -1,18 +1,17 @@
-from typing import Any, Dict
-from fastapi import FastAPI, Request
-from fastapi.responses import RedirectResponse
-from fastapi.middleware.cors import CORSMiddleware
-from langserve import add_routes
-import uuid
 import copy
-from dotenv import load_dotenv
-from src.agent import graph
-from langchain_core.runnables import chain
-from pydantic import BaseModel, Field
-from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
-from typing import List, Union
 import logging
+import uuid
+from typing import Any, Dict, List, Union
 
+from dotenv import load_dotenv
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+from langchain_core.runnables import chain
+from langserve import add_routes
+from pydantic import BaseModel, Field
+from src.agent import graph
 
 load_dotenv()
 
@@ -94,7 +93,7 @@ async def graph_chain(inputs, config):
 class InputChat(BaseModel):
     """Input for the chat endpoint."""
 
-    messages: List[Union[HumanMessage, AIMessage, SystemMessage]] = Field(
+    messages: list[Union[HumanMessage, AIMessage, SystemMessage]] = Field(
         ...,
         description="The chat messages representing the current conversation.",
     )
