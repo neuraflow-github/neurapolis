@@ -14,106 +14,124 @@ client = Client(api_key=os.environ["LANGCHAIN_API_KEY"], api_url=os.environ["LAN
 examples = list(client.list_examples(dataset_name="Neurapolis ETL Sectionizer"))
 
 def evaluate_type(root_run: Run, example: Example) -> dict:
-    outputs = root_run.outputs
+    proposed_outputs = root_run.outputs["output"]
     example_output = example.outputs
     return {
         "key": "type_comparison",
-        "score": 1 if outputs['output'].type == example_output['type'] else 0,
+        "score": 1 if proposed_outputs.type == example_output["type"] else 0,
+    }
+
+def evaluate_split_count(root_run: Run, example: Example) -> dict:
+    promposed_outputs = root_run.outputs["output"]
+    example_output = example.outputs
+    if promposed_outputs.type == "OTHER" or example_output["type"] == "OTHER":
+        return {
+            "key": "split_count_comparison",
+            "score": None,  # No score
+            "metadata": {
+                "reason": "Type is OTHER, so no splits are needed."
+            }
+        }
+    proposed_splits = promposed_outputs.splits
+    golden_splits = example_output["splits"]
+    proposed_split_count = len(proposed_splits)
+    golden_split_count = len(golden_splits)
+    # Calculate the difference in counts
+    split_count_difference = abs(proposed_split_count - golden_split_count)
+    # Normalize the score based on the difference
+    max_difference = max(proposed_split_count, golden_split_count)
+    score = 1 - (split_count_difference / max_difference) if max_difference > 0 else 1
+    return {
+        "key": "split_count_comparison",
+        "score": score,
+        "metadata": {
+            "proposed_count": proposed_split_count,
+            "golden_count": golden_split_count,
+            "count_difference": split_count_difference
+        }
     }
 
 def calculate_splits_similarity(proposed_splits: list, golden_splits: list) -> float:
     # Calculate total lines
     total_lines = max(
-        max(x_split.line_number for x_split in proposed_splits),
-        max(y_split['line_number'] for y_split in golden_splits)
+        max(proposed_split.line_number for proposed_split in proposed_splits),
+        max(golden_split["line_number"] for golden_split in golden_splits)
     )
-    proposed = np.array([x_split.line_number for x_split in proposed_splits])
-    golden = np.array([y_split['line_number'] for y_split in golden_splits])
-    # Normalize the splits
-    proposed_norm = proposed / total_lines
-    golden_norm = golden / total_lines
-    # Calculate the minimum distance for each proposed split to any golden split
-    distances = np.min(np.abs(proposed_norm[:, np.newaxis] - golden_norm), axis=1)
-    # Calculate similarity score (inverse of distance)
-    similarities = 1 / (1 + distances)
+    proposed_norm = np.array([proposed_split.line_number for proposed_split in proposed_splits]) / total_lines
+    golden_norm = np.array([golden_split["line_number"] for golden_split in golden_splits]) / total_lines
+    
+    # Calculate distances matrix
+    distances = np.abs(proposed_norm[:, np.newaxis] - golden_norm)
+    
+    # Find best matching pairs
+    matched_distances = np.min(distances, axis=1)
+    
+    # Calculate similarity scores with an adjusted penalty
+    base_penalty = 7  # Base penalty factor
+    penalty_factor = base_penalty * (200 / max(total_lines, 50))**0.5
+    similarities = 1 / (1 + (matched_distances * penalty_factor)**2)
+    
     return np.mean(similarities)
 
-def evaluate_splits(root_run: Run, example: Example) -> dict:
-    outputs = root_run.outputs['output']
+# This modification:
+# Uses a base penalty of 7, which provides a good balance for average-length documents.
+# Adjusts the penalty based on the document length, using 200 lines as the reference point.
+# 3. Uses a square root scaling to make the adjustment more gradual.
+# Ensures that very short documents (less than 50 lines) don't get an overly steep penalty.
+# With this approach:
+# For a 50-line document:
+# A difference of 1 line (0.02 normalized) results in a similarity of 0.6757
+# A difference of 5 lines (0.1 normalized) results in a similarity of 0.0385
+# For a 200-line document:
+# A difference of 1 line (0.005 normalized) results in a similarity of 0.9615
+# A difference of 5 lines (0.025 normalized) results in a similarity of 0.5
+# A difference of 10 lines (0.05 normalized) results in a similarity of 0.1667
+# For an 800-line document:
+# A difference of 1 line (0.00125 normalized) results in a similarity of 0.9901
+# A difference of 5 lines (0.00625 normalized) results in a similarity of 0.8696
+# A difference of 10 lines (0.0125 normalized) results in a similarity of 0.6757
+
+def evaluate_splits_similarity(root_run: Run, example: Example) -> dict:
+    proposed_outputs = root_run.outputs["output"]
     example_output = example.outputs
-    if outputs.type == "OTHER" or example_output['type'] == "OTHER":
+    if proposed_outputs.type == "OTHER" or example_output["type"] == "OTHER":
         return {
-            "key": "splits_comparison",
-            "score": None,
+            "key": "splits_similarity_comparison",
+            "score": None, # No score
             "metadata": {
                 "reason": "Type is OTHER, so no splits are needed."
             }
         }
-    proposed_splits = outputs.splits
-    golden_splits = example_output['splits']
+    proposed_splits = proposed_outputs.splits
+    golden_splits = example_output["splits"]
     similarity = calculate_splits_similarity(proposed_splits, golden_splits)
     return {
-        "key": "splits_comparison",
+        "key": "splits_similarity_comparison",
         "score": similarity,
         "metadata": {
             "proposed_splits": [x_split.line_number for x_split in proposed_splits],
-            "golden_splits": [y_split['line_number'] for y_split in golden_splits],
-        }
-    }
-
-def evaluate_split_count(root_run: Run, example: Example) -> dict:
-    outputs = root_run.outputs['output']
-    example_output = example.outputs
-    if outputs.type != 'NOT_RELATED_TOPICS' or example_output['type'] != 'NOT_RELATED_TOPICS':
-        return {
-            "key": "split_count_comparison",
-            "score": None,  # No score for non-NOT_RELATED_TOPICS types
-            "metadata": {
-                "count_match": "N/A",
-                "reason": "Not applicable for this document type"
-            }
-        }
-    proposed_splits = outputs.splits
-    golden_splits = example_output['splits']
-    proposed_count = len(proposed_splits)
-    golden_count = len(golden_splits)
-    # Calculate the difference in counts
-    count_difference = abs(proposed_count - golden_count)
-    # Normalize the score based on the difference
-    max_difference = max(proposed_count, golden_count)
-    score = 1 - (count_difference / max_difference) if max_difference > 0 else 1
-    return {
-        "key": "split_count_comparison",
-        "score": score,
-        "metadata": {
-            "proposed_count": proposed_count,
-            "golden_count": golden_count,
-            "count_difference": count_difference
+            "golden_splits": [y_split["line_number"] for y_split in golden_splits],
         }
     }
 
 def compound_metric(root_run: Run, example: Example) -> dict:
-    type_score = evaluate_type(root_run, example)['score']
-    splits_result = evaluate_splits(root_run, example)
-    count_result = evaluate_split_count(root_run, example)
-    splits_score = splits_result['score']
-    count_score = count_result['score']
-    # If the type is not NOT_RELATED_TOPICS, only consider the type score
-    if splits_score is None or count_score is None:
+    proposed_outputs = root_run.outputs["output"]
+    example_output = example.outputs
+    type_score = evaluate_type(root_run, example)["score"]
+    split_count_score = evaluate_split_count(root_run, example)["score"]
+    splits_similarity_score = evaluate_splits_similarity(root_run, example)["score"]
+    compound_score = None
+    if proposed_outputs.type == "OTHER" or example_output["type"] == "OTHER":
         compound_score = type_score
-        reason = "Only type comparison applicable"
     else:
-        # Combine scores (you can adjust the weights as needed)
-        compound_score = 0.4 * type_score + 0.3 * splits_score + 0.3 * count_score
-        reason = "All metrics applicable"
+        compound_score = 0.3 * type_score + 0.35 * split_count_score + 0.35 * splits_similarity_score
     return {
         "key": "compound_metric",
         "score": compound_score,
         "metadata": {
             "type_score": type_score,
-            "splits_score": splits_score,
-            "count_score": count_score,
-            "reason": reason
+            "split_count_score": split_count_score,
+            "splits_similarity_score": splits_similarity_score,
         }
     }
 
@@ -182,7 +200,7 @@ chain = prompt_template | structured_llm
 result = evaluate(
     lambda x: chain.invoke(x["text_lines"]),
     data=examples,
-    evaluators=[evaluate_type, evaluate_splits, evaluate_split_count, compound_metric],
+    evaluators=[evaluate_type, evaluate_splits_similarity, evaluate_split_count, compound_metric],
     experiment_prefix="example",
     client=client
 )
