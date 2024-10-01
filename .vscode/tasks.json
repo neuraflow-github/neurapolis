@@ -15,6 +15,16 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "Run Streamlit",
+            "type": "shell",
+            "command": "${workspaceFolder}/ui/.venv/bin/streamlit run app.py",
+            "options": {
+                "cwd": "/Users/pascal/neurapolis/ui"
+            },
+            "problemMatcher": [],
+            "group": "build"
         }
     ]
 }
