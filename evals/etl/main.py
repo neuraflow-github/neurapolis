@@ -154,7 +154,6 @@ class FileSectionizerLlmDataModel(BaseModel):
     )
 
 prompt_template_string = """
-- !!! Antworte immer in dem gegebenen Format. !!!
 Du bist Teil einer Retrieval Augmented Generation Anwendung namens Rats Informations System (RIS). Du bist außerdem Teil der ETL-Pipeline dieser Anwendung.
 
 Das RIS ist eine Datenbank, die Informationen einer bestimmten Stadt über Organisationen, Personen, Sitzungen, Dateien usw. enthält. Es ist ein internes System für Politiker und städtische Mitarbeiter, das ihnen bei ihrer Arbeit hilft. Deine Stadt ist die deutsche Stadt Freiburg.
@@ -166,12 +165,11 @@ Du bist der Datei-Sektionierer.
 Deine Aufgabe:
 - Schaue dir das angegebene Dokument genau an und finde heraus, um welchen der folgenden Inhaltstypen es sich handelt:
     - "NOT_RELATED_TOPICS": Dokument, welches mehrere Themen enthält, die nicht miteinander verwandt sind. Zum Beispiel Sitzungsprotokolle, bei denen es um sehr unterschiedliche Tagesordnungspunkte geht. Auch mehrere Bauanträge sind zum Beispiel alle nicht miteinander verwandt und sollten deswegen getrennt werden.
-    - "RELATED_TOPICS": Dokument, welches sich mit einem bestimmten Thema befasst, vielleicht auch mit vielen Unterthemen, aber die meisten davon beziehen sich auf ein großes Thema.
-    - "OTHER": Dokument, das weitere Analyse benötigt, weil es sich um ein Thema handelt, das nicht durch Text extrahiert werden kann. Zum Beispiel Dokumente, welche nur eine Grafik oder Bild enthalten, grafische Übersichten von Wahlergebnissen oder Kalendar. Aber auch Dokumente, welche nur eine große Finanztabelle enthalten, etc. Zähle zu diesen Dokumenten aber auch noch einenn weiteren Dokumenttypen hinzu: Einladungen zu einem Meeting, welche hauptsählich eine Einladung sind, welche noch die Tagesordungspunkte enthalten, sind auch "OTHER", da diese später anders verarbeitet werden.
+    - "RELATED_TOPICS": Dokument, welches sich mit einem bestimmten Thema befasst, vielleicht auch mit vielen Unterthemen oder Subprojekten, aber die meisten davon beziehen sich auf ein großes Thema und hängen irgendwie zusammen.
+    - "OTHER": Dokument, welches weitere Analyse benötigt, weil es sich um ein Thema handelt, das nicht durch Text extrahiert werden kann. Zum Beispiel Dokumente, welche nur eine Grafik oder Bild enthalten, grafische Übersichten von Wahlergebnissen oder Kalendar. Aber auch Dokumente, welche nur oder hauptsächlich eine große Finanztabelle oder andere Tabelle mit vielen Zahlen enthalten, etc. Manche Dokumente enthalten Tabellen, haben aber trotzdem noch viel textlichen Inhalt zur Tabelle und zählen dann nicht als "OTHER". Zähle als "OTHER" aber auch noch Einladungen (mit oft Tagesordnungspunkten) oder Absagen von Sitzungen oder Agendas von Sitzungen, welche nicht die Ergebnisse der Sitzung enthalten.
 - Antworte mit dem Inhaltstypen und einer kurzen Begründung, warum du diesen Typ ausgewählt hast.
 - Wenn es sich um den Inhaltstypen "NOT_RELATED_TOPICS" oder "RELATED_TOPICS" handelt, gib die Zeilennummern an, an denen das Dokument aufgeteilt werden sollte.
-    - In jeder Sektion sollte es dann nur noch um ein Thema gehen.
-    - Sektionen sollten also nicht viel zu klein schrittig werden.
+    - In jeder Sektion sollte es dann nur noch um ein Thema gehen. Sektionen sollten also nicht viel zu klein schrittig werden.
     - Es wird immer vor der Zeile gesplittet. Wenn du also unter anderem die Zeilennummer 2 angibst, würde zwischen Zeile 1 und 2 gesplittet werden.
     - Gib zu jeder Aufteilung eine kurze Begründung an, warum du das Dokument an dieser Stelle aufgeteilt hast.
 
@@ -180,7 +178,7 @@ Achtung:
 - Tagesordnungspunkt wird oft mit "TOP" abgekürzt.
 - Fange kein Pattern an, also nicht zb einfach alle 10 Zeilen splitten.
 - Gebe immer die Zeilennummer 1 als erste Aufteilung aus, egal um welchen Typen es sich handelt.
-- !!! Antworte immer in dem gegebenen Format. !!!
+- Antworte immer in dem angegebenen Format.
 
 
 Beispiele:
@@ -191,10 +189,9 @@ Beispiele:
 <Dokument>
 {text}
 </Dokument>
-- !!! Antworte immer in dem gegebenen Format. !!!
 """
 prompt_template = PromptTemplate.from_template(prompt_template_string)
-llm = AzureChatOpenAI(deployment_name="gpt-4o")
+llm = AzureChatOpenAI(deployment_name="gpt-4o", temperature=0)
 structured_llm = llm.with_structured_output(FileSectionizerLlmDataModel)
 chain = prompt_template | structured_llm
 result = evaluate(
