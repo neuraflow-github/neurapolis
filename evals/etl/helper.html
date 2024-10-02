@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSON Converter</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      textarea {
+        width: 100%;
+        height: 200px;
+        margin-bottom: 10px;
+      }
+      button {
+        padding: 10px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>JSON Converter</h1>
+    <textarea id="input" placeholder="Paste your JSON here"></textarea>
+    <textarea id="output" readonly></textarea>
+    <button id="copyButton">Copy Output</button>
+
+    <script>
+      const inputTextarea = document.getElementById("input");
+      const outputTextarea = document.getElementById("output");
+      const copyButton = document.getElementById("copyButton");
+
+      function convertJson() {
+        try {
+          let inputJson = JSON.parse(inputTextarea.value);
+          if (typeof inputJson.splits === "string") {
+            inputJson.splits = JSON.parse(inputJson.splits);
+          }
+          outputTextarea.value = JSON.stringify(inputJson, null, 2);
+        } catch (error) {
+          outputTextarea.value = "Error: Invalid JSON input";
+        }
+      }
+
+      inputTextarea.addEventListener("input", convertJson);
+
+      copyButton.addEventListener("click", () => {
+        outputTextarea.select();
+        document.execCommand("copy");
+        outputTextarea.value = "";
+        inputTextarea.value = "";
+      });
+    </script>
+  </body>
+</html>
